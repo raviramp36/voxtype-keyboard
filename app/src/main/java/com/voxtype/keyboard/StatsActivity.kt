@@ -21,12 +21,19 @@ import com.google.android.material.card.MaterialCardView
 import com.google.android.material.tabs.TabLayout
 import com.voxtype.keyboard.database.*
 import kotlinx.coroutines.launch
+import android.animation.ValueAnimator
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.Calendar
 
 class StatsActivity : AppCompatActivity() {
     
     private lateinit var analyticsManager: AnalyticsManager
+    
+    // Header Views
+    private lateinit var greetingText: TextView
+    private lateinit var headerTodayWords: TextView
+    private lateinit var headerStreak: TextView
     
     // Today Stats Views
     private lateinit var todayWordsText: TextView
@@ -63,6 +70,19 @@ class StatsActivity : AppCompatActivity() {
     }
     
     private fun initializeViews() {
+        // Header views
+        greetingText = findViewById(R.id.greeting_text)
+        headerTodayWords = findViewById(R.id.header_today_words)
+        headerStreak = findViewById(R.id.header_streak)
+        
+        // Set greeting based on time
+        val hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
+        greetingText.text = when {
+            hour < 12 -> "Good morning!"
+            hour < 17 -> "Good afternoon!"
+            else -> "Good evening!"
+        }
+        
         // Today stats
         todayWordsText = findViewById(R.id.today_words_count)
         todayTranscriptionsText = findViewById(R.id.today_transcriptions_count)
@@ -124,13 +144,40 @@ class StatsActivity : AppCompatActivity() {
     
     private fun displayTodayStats(stats: TodayStatsModel) {
         runOnUiThread {
+            // Update header
+            headerTodayWords.text = "${stats.totalWords}"
+            updateStreak()
+            
+            // Update cards with animation
             todayWordsText.text = "${stats.totalWords}"
             todayTranscriptionsText.text = "${stats.totalTranscriptions}"
             todayDurationText.text = stats.totalDuration.formatDuration()
             todayAvgWordsText.text = "%.1f".format(stats.averageWordsPerTranscription)
             
+            // Animate the values
+            animateValue(todayWordsText, 0, stats.totalWords)
+            animateValue(todayTranscriptionsText, 0, stats.totalTranscriptions)
+            
             // Update hourly chart with today's transcriptions
             updateHourlyChart(stats.transcriptions)
+        }
+    }
+    
+    private fun animateValue(textView: TextView, from: Int, to: Int) {
+        val animator = ValueAnimator.ofInt(from, to)
+        animator.duration = 1000
+        animator.addUpdateListener { animation ->
+            textView.text = animation.animatedValue.toString()
+        }
+        animator.start()
+    }
+    
+    private fun updateStreak() {
+        lifecycleScope.launch {
+            val streak = analyticsManager.getStreakDays()
+            runOnUiThread {
+                headerStreak.text = "🔥 $streak"
+            }
         }
     }
     
@@ -162,12 +209,19 @@ class StatsActivity : AppCompatActivity() {
             setDrawValueAboveBar(true)
             setPinchZoom(false)
             setDrawGridBackground(false)
+            setTouchEnabled(true)
+            isDragEnabled = true
             
             xAxis.position = XAxis.XAxisPosition.BOTTOM
             xAxis.setDrawGridLines(false)
+            xAxis.textColor = Color.parseColor("#757575")
             axisLeft.setDrawGridLines(false)
+            axisLeft.textColor = Color.parseColor("#757575")
             axisRight.isEnabled = false
             legend.isEnabled = false
+            
+            // Add animation
+            animateY(1500)
         }
     }
     
@@ -196,12 +250,19 @@ class StatsActivity : AppCompatActivity() {
             description.isEnabled = false
             setDrawGridBackground(false)
             setPinchZoom(false)
+            setTouchEnabled(true)
+            isDragEnabled = true
             
             xAxis.position = XAxis.XAxisPosition.BOTTOM
             xAxis.setDrawGridLines(false)
+            xAxis.textColor = Color.parseColor("#757575")
             axisLeft.setDrawGridLines(false)
+            axisLeft.textColor = Color.parseColor("#757575")
             axisRight.isEnabled = false
             legend.isEnabled = false
+            
+            // Add animation
+            animateY(1500)
         }
     }
     
@@ -266,6 +327,14 @@ class StatsActivity : AppCompatActivity() {
         weeklyCard.visibility = View.GONE
         correctionsCard.visibility = View.VISIBLE
         loadCorrections()
+        loadWordCloud()
+    }
+    
+    private fun loadWordCloud() {
+        lifecycleScope.launch {
+            val topWords = analyticsManager.getMostUsedWords(20)
+            displayWordCloud(topWords)
+        }
     }
     
     private fun loadCorrections() {

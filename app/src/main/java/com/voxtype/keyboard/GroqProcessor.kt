@@ -97,34 +97,28 @@ class GroqProcessor(private val context: Context) {
     ): String = withContext(Dispatchers.IO) {
         try {
             groqApi?.let { api ->
-                val systemPrompt = """You are an intelligent voice-to-text formatting assistant, similar to Wispr Flow. Your job is to transform raw speech transcription into properly formatted, contextually appropriate text.
+                val systemPrompt = """You are a voice-to-text formatter. Transform raw transcriptions into properly formatted text.
 
-CRITICAL RULES:
-1. Add proper punctuation (periods, commas, question marks, exclamation points)
-2. Capitalize appropriately (sentence starts, proper nouns, I)
-3. Fix grammar while preserving the speaker's intent and voice
-4. Understand context - if previous text exists, ensure smooth continuation
-5. Handle common speech patterns:
-   - Remove filler words like "um", "uh", "like" (unless intentionally emphatic)
-   - Convert "gonna" → "going to", "wanna" → "want to" (in formal mode)
-   - Keep contractions in casual mode
-6. Format based on detected intent:
-   - Questions should end with ?
-   - Excited statements with !
-   - Lists with proper bullets or numbering if mentioned
-7. Preserve technical terms, names, and specific phrases exactly
-8. If user says "period", "comma", "new line" etc., treat as punctuation commands
-9. Handle Indian English naturally (recognise phrases like "do the needful", "revert back")
-
-OUTPUT: Return ONLY the formatted text, no explanations or alternatives.
+RULES:
+1. Add punctuation (. , ? ! : ;) based on sentence structure and tone
+2. Capitalize: sentences, proper nouns, "I", acronyms
+3. Fix only obvious errors, preserve speaker's natural voice
+4. Handle speech patterns:
+   - Remove excessive "um", "uh" (keep if meaningful)
+   - Fix "gonna"→"going to", "wanna"→"want to" ONLY in formal mode
+5. Punctuation commands: "period"→".", "comma"→",", "question mark"→"?"
+6. Indian English: Keep phrases like "do the needful", "prepone", "revert back"
+7. Numbers: Keep "lakh", "crore" as spoken
 
 MODE: ${mode.name}
 ${when (mode) {
-    TextMode.GENERAL -> "Balance between casual and professional. Natural flow."
-    TextMode.EMAIL -> "Professional email format. Complete sentences. Proper salutations if starting email."
-    TextMode.CHAT -> "Casual messaging. Can use shortcuts, emojis if appropriate. Keep conversational."
-    TextMode.FORMAL -> "Business formal. No contractions. Professional vocabulary."
-}}"""
+    TextMode.GENERAL -> "Natural conversational style"
+    TextMode.EMAIL -> "Professional email format"
+    TextMode.CHAT -> "Casual messaging style"
+    TextMode.FORMAL -> "Business formal style"
+}}
+
+OUTPUT: Return ONLY formatted text, nothing else."""
                 
                 val userPrompt = buildString {
                     if (context.isNotEmpty()) {
@@ -148,13 +142,13 @@ ${when (mode) {
                 }
                 
                 val request = GroqRequest(
-                    model = "llama3-8b-8192", // Fast model for keyboard use
+                    model = "mixtral-8x7b-32768", // Better quality model for formatting
                     messages = listOf(
                         Message("system", systemPrompt),
                         Message("user", userPrompt)
                     ),
-                    temperature = 0.7,
-                    max_tokens = 150,
+                    temperature = 0.3,  // Lower for consistent formatting
+                    max_tokens = 200,    // Slightly more tokens for complete sentences
                     stream = false
                 )
                 
@@ -207,23 +201,24 @@ ${when (mode) {
                 val requestFile = audioFile.asRequestBody("audio/*".toMediaTypeOrNull())
                 val audioPart = MultipartBody.Part.createFormData("file", audioFile.name, requestFile)
                 
-                val responseFormatBody = "verbose_json".toRequestBody("text/plain".toMediaTypeOrNull())
+                // Use "text" format for cleaner output
+                val responseFormatBody = "text".toRequestBody("text/plain".toMediaTypeOrNull())
                 val languageBody = language.toRequestBody("text/plain".toMediaTypeOrNull())
                 
-                val promptBody = prompt?.let {
-                    // Add context hints for better transcription
-                    val contextPrompt = """
-                        Context for better transcription:
-                        - This is voice input for text messaging/typing
-                        - User may use Indian English phrases
-                        - Common terms: "prepone", "do the needful", "revert back"
-                        - User may say punctuation commands like "period", "comma", "new line"
-                        - $it
-                    """.trimIndent()
-                    contextPrompt.toRequestBody("text/plain".toMediaTypeOrNull())
+                // Improved prompt for Indian English with proper context
+                val whisperPrompt = buildString {
+                    append("This is conversational speech in ${if (language == "hi") "Hindi" else "Indian English"}. ")
+                    append("Common phrases include: do the needful, prepone, postpone, out of station, revert back, ")
+                    append("kindly do the same, good name, pass out (graduate), cousin brother/sister. ")
+                    append("Numbers may be in lakhs and crores. ")
+                    if (!prompt.isNullOrEmpty()) {
+                        append("Previous context: $prompt ")
+                    }
+                    append("Transcribe accurately preserving the speaker's words.")
                 }
                 
-                val temperatureBody = "0.2".toRequestBody("text/plain".toMediaTypeOrNull())  // Lower temperature for more accurate transcription
+                val promptBody = whisperPrompt.toRequestBody("text/plain".toMediaTypeOrNull())
+                val temperatureBody = "0.0".toRequestBody("text/plain".toMediaTypeOrNull())  // Zero for maximum accuracy
                 
                 // Call Whisper API
                 val response = api.transcribe(
@@ -235,11 +230,12 @@ ${when (mode) {
                     temperature = temperatureBody
                 )
                 
-                // Whisper already includes punctuation!
-                return@withContext response.text
+                // Return the raw transcription (will be formatted separately)
+                return@withContext response.text.trim()
                 
             } ?: throw Exception("Groq API not configured. Please add your API key in settings.")
         } catch (e: Exception) {
+            android.util.Log.e("GroqProcessor", "Transcription error: ${e.message}")
             e.printStackTrace()
             throw Exception("Transcription failed: ${e.message}")
         }

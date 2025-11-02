@@ -24,6 +24,7 @@ drawable button_idle
 drawable button_listening
 drawable button_processing
 drawable button_recording
+drawable gradient_background
 drawable ic_clear
 drawable ic_keyboard
 drawable ic_language
@@ -31,6 +32,7 @@ drawable ic_mic
 drawable ic_mic_active
 drawable ic_processing
 drawable ic_settings
+drawable summary_background
 drawable word_item_background
 id api_key_input
 id api_url_input
@@ -41,6 +43,9 @@ id corrections_card
 id corrections_recycler
 id enable_keyboard_button
 id frequency_text
+id greeting_text
+id header_streak
+id header_today_words
 id help_text
 id hourly_chart
 id keyboard_button

@@ -5,6 +5,7 @@ import com.voxtype.keyboard.database.*
 import kotlinx.coroutines.*
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.Calendar
 
 class AnalyticsManager(private val context: Context) {
     
@@ -238,6 +239,42 @@ class AnalyticsManager(private val context: Context) {
                 )
             )
         }
+    }
+    
+    // Get streak days
+    suspend fun getStreakDays(): Int {
+        // Calculate consecutive days with activity
+        val recentStats = database.statsDao().getRecentStats(30)
+        if (recentStats.isEmpty()) return 0
+        
+        val today = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
+        var streak = 0
+        val calendar = Calendar.getInstance()
+        
+        // Start from today and go backwards
+        for (i in 0..29) {
+            calendar.time = Date()
+            calendar.add(Calendar.DAY_OF_YEAR, -i)
+            val dateStr = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(calendar.time)
+            
+            val hasActivity = recentStats.any { it.date == dateStr && it.totalWords > 0 }
+            
+            if (hasActivity) {
+                if (i == streak) {
+                    streak++
+                } else {
+                    break
+                }
+            } else if (i == 0) {
+                // No activity today yet, check from yesterday
+                continue
+            } else if (streak > 0) {
+                // Gap found, stop counting
+                break
+            }
+        }
+        
+        return streak
     }
     
     // Clean up old data (older than 30 days)

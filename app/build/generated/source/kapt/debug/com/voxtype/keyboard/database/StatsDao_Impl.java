@@ -336,6 +336,74 @@ public final class StatsDao_Impl implements StatsDao {
   }
 
   @Override
+  public Object getRecentStats(final int days,
+      final Continuation<? super List<DailyStats>> $completion) {
+    final String _sql = "SELECT * FROM daily_stats ORDER BY date DESC LIMIT ?";
+    final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 1);
+    int _argIndex = 1;
+    _statement.bindLong(_argIndex, days);
+    final CancellationSignal _cancellationSignal = DBUtil.createCancellationSignal();
+    return CoroutinesRoom.execute(__db, false, _cancellationSignal, new Callable<List<DailyStats>>() {
+      @Override
+      @NonNull
+      public List<DailyStats> call() throws Exception {
+        final Cursor _cursor = DBUtil.query(__db, _statement, false, null);
+        try {
+          final int _cursorIndexOfDate = CursorUtil.getColumnIndexOrThrow(_cursor, "date");
+          final int _cursorIndexOfTotalWords = CursorUtil.getColumnIndexOrThrow(_cursor, "totalWords");
+          final int _cursorIndexOfTotalCharacters = CursorUtil.getColumnIndexOrThrow(_cursor, "totalCharacters");
+          final int _cursorIndexOfTotalTranscriptions = CursorUtil.getColumnIndexOrThrow(_cursor, "totalTranscriptions");
+          final int _cursorIndexOfTotalDuration = CursorUtil.getColumnIndexOrThrow(_cursor, "totalDuration");
+          final int _cursorIndexOfCorrectionsCount = CursorUtil.getColumnIndexOrThrow(_cursor, "correctionsCount");
+          final int _cursorIndexOfAppsUsed = CursorUtil.getColumnIndexOrThrow(_cursor, "appsUsed");
+          final int _cursorIndexOfPeakHour = CursorUtil.getColumnIndexOrThrow(_cursor, "peakHour");
+          final int _cursorIndexOfAverageWordsPerTranscription = CursorUtil.getColumnIndexOrThrow(_cursor, "averageWordsPerTranscription");
+          final List<DailyStats> _result = new ArrayList<DailyStats>(_cursor.getCount());
+          while (_cursor.moveToNext()) {
+            final DailyStats _item;
+            final String _tmpDate;
+            if (_cursor.isNull(_cursorIndexOfDate)) {
+              _tmpDate = null;
+            } else {
+              _tmpDate = _cursor.getString(_cursorIndexOfDate);
+            }
+            final int _tmpTotalWords;
+            _tmpTotalWords = _cursor.getInt(_cursorIndexOfTotalWords);
+            final int _tmpTotalCharacters;
+            _tmpTotalCharacters = _cursor.getInt(_cursorIndexOfTotalCharacters);
+            final int _tmpTotalTranscriptions;
+            _tmpTotalTranscriptions = _cursor.getInt(_cursorIndexOfTotalTranscriptions);
+            final float _tmpTotalDuration;
+            _tmpTotalDuration = _cursor.getFloat(_cursorIndexOfTotalDuration);
+            final int _tmpCorrectionsCount;
+            _tmpCorrectionsCount = _cursor.getInt(_cursorIndexOfCorrectionsCount);
+            final String _tmpAppsUsed;
+            if (_cursor.isNull(_cursorIndexOfAppsUsed)) {
+              _tmpAppsUsed = null;
+            } else {
+              _tmpAppsUsed = _cursor.getString(_cursorIndexOfAppsUsed);
+            }
+            final Integer _tmpPeakHour;
+            if (_cursor.isNull(_cursorIndexOfPeakHour)) {
+              _tmpPeakHour = null;
+            } else {
+              _tmpPeakHour = _cursor.getInt(_cursorIndexOfPeakHour);
+            }
+            final float _tmpAverageWordsPerTranscription;
+            _tmpAverageWordsPerTranscription = _cursor.getFloat(_cursorIndexOfAverageWordsPerTranscription);
+            _item = new DailyStats(_tmpDate,_tmpTotalWords,_tmpTotalCharacters,_tmpTotalTranscriptions,_tmpTotalDuration,_tmpCorrectionsCount,_tmpAppsUsed,_tmpPeakHour,_tmpAverageWordsPerTranscription);
+            _result.add(_item);
+          }
+          return _result;
+        } finally {
+          _cursor.close();
+          _statement.release();
+        }
+      }
+    }, $completion);
+  }
+
+  @Override
   public Object getAverageWordsSince(final String startDate,
       final Continuation<? super Float> $completion) {
     final String _sql = "SELECT AVG(totalWords) FROM daily_stats WHERE date >= ?";

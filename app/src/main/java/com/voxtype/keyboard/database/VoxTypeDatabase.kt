@@ -195,6 +195,9 @@ interface StatsDao {
     @Query("SELECT * FROM daily_stats ORDER BY date DESC LIMIT 7")
     suspend fun getLastWeekStats(): List<DailyStats>
     
+    @Query("SELECT * FROM daily_stats ORDER BY date DESC LIMIT :days")
+    suspend fun getRecentStats(days: Int): List<DailyStats>
+    
     @Query("SELECT AVG(totalWords) FROM daily_stats WHERE date >= :startDate")
     suspend fun getAverageWordsSince(startDate: String): Float?
 }

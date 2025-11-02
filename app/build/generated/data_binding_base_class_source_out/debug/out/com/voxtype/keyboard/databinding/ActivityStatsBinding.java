@@ -4,10 +4,10 @@ package com.voxtype.keyboard.databinding;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewbinding.ViewBinding;
 import androidx.viewbinding.ViewBindings;
@@ -23,7 +23,7 @@ import java.lang.String;
 
 public final class ActivityStatsBinding implements ViewBinding {
   @NonNull
-  private final LinearLayout rootView;
+  private final CoordinatorLayout rootView;
 
   @NonNull
   public final PieChart appsChart;
@@ -33,6 +33,15 @@ public final class ActivityStatsBinding implements ViewBinding {
 
   @NonNull
   public final RecyclerView correctionsRecycler;
+
+  @NonNull
+  public final TextView greetingText;
+
+  @NonNull
+  public final TextView headerStreak;
+
+  @NonNull
+  public final TextView headerTodayWords;
 
   @NonNull
   public final LineChart hourlyChart;
@@ -73,9 +82,11 @@ public final class ActivityStatsBinding implements ViewBinding {
   @NonNull
   public final RecyclerView wordsCloudRecycler;
 
-  private ActivityStatsBinding(@NonNull LinearLayout rootView, @NonNull PieChart appsChart,
+  private ActivityStatsBinding(@NonNull CoordinatorLayout rootView, @NonNull PieChart appsChart,
       @NonNull MaterialCardView correctionsCard, @NonNull RecyclerView correctionsRecycler,
-      @NonNull LineChart hourlyChart, @NonNull TabLayout tabLayout, @NonNull TextView todayAvgWords,
+      @NonNull TextView greetingText, @NonNull TextView headerStreak,
+      @NonNull TextView headerTodayWords, @NonNull LineChart hourlyChart,
+      @NonNull TabLayout tabLayout, @NonNull TextView todayAvgWords,
       @NonNull MaterialCardView todayCard, @NonNull TextView todayDuration,
       @NonNull TextView todayTranscriptionsCount, @NonNull TextView todayWordsCount,
       @NonNull TextView vocabularySize, @NonNull TextView weeklyAvgWords,
@@ -85,6 +96,9 @@ public final class ActivityStatsBinding implements ViewBinding {
     this.appsChart = appsChart;
     this.correctionsCard = correctionsCard;
     this.correctionsRecycler = correctionsRecycler;
+    this.greetingText = greetingText;
+    this.headerStreak = headerStreak;
+    this.headerTodayWords = headerTodayWords;
     this.hourlyChart = hourlyChart;
     this.tabLayout = tabLayout;
     this.todayAvgWords = todayAvgWords;
@@ -102,7 +116,7 @@ public final class ActivityStatsBinding implements ViewBinding {
 
   @Override
   @NonNull
-  public LinearLayout getRoot() {
+  public CoordinatorLayout getRoot() {
     return rootView;
   }
 
@@ -142,6 +156,24 @@ public final class ActivityStatsBinding implements ViewBinding {
       id = R.id.corrections_recycler;
       RecyclerView correctionsRecycler = ViewBindings.findChildViewById(rootView, id);
       if (correctionsRecycler == null) {
+        break missingId;
+      }
+
+      id = R.id.greeting_text;
+      TextView greetingText = ViewBindings.findChildViewById(rootView, id);
+      if (greetingText == null) {
+        break missingId;
+      }
+
+      id = R.id.header_streak;
+      TextView headerStreak = ViewBindings.findChildViewById(rootView, id);
+      if (headerStreak == null) {
+        break missingId;
+      }
+
+      id = R.id.header_today_words;
+      TextView headerTodayWords = ViewBindings.findChildViewById(rootView, id);
+      if (headerTodayWords == null) {
         break missingId;
       }
 
@@ -223,10 +255,11 @@ public final class ActivityStatsBinding implements ViewBinding {
         break missingId;
       }
 
-      return new ActivityStatsBinding((LinearLayout) rootView, appsChart, correctionsCard,
-          correctionsRecycler, hourlyChart, tabLayout, todayAvgWords, todayCard, todayDuration,
-          todayTranscriptionsCount, todayWordsCount, vocabularySize, weeklyAvgWords, weeklyCard,
-          weeklyChart, weeklyWordsCount, wordsCloudRecycler);
+      return new ActivityStatsBinding((CoordinatorLayout) rootView, appsChart, correctionsCard,
+          correctionsRecycler, greetingText, headerStreak, headerTodayWords, hourlyChart, tabLayout,
+          todayAvgWords, todayCard, todayDuration, todayTranscriptionsCount, todayWordsCount,
+          vocabularySize, weeklyAvgWords, weeklyCard, weeklyChart, weeklyWordsCount,
+          wordsCloudRecycler);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

@@ -3005,6 +3005,7 @@ drawable design_ic_visibility
 drawable design_ic_visibility_off
 drawable design_password_eye
 drawable design_snackbar_background
+drawable gradient_background
 drawable ic_arrow_back_black_24
 drawable ic_call_answer
 drawable ic_call_answer_low
@@ -3102,6 +3103,7 @@ drawable notification_template_icon_bg
 drawable notification_template_icon_low_bg
 drawable notification_tile_bg
 drawable notify_panel_notification_icon_bg
+drawable summary_background
 drawable test_level_drawable
 drawable tooltip_frame_dark
 drawable tooltip_frame_light
@@ -3319,10 +3321,13 @@ id ghost_view_holder
 id gone
 id graph
 id graph_wrap
+id greeting_text
 id group_divider
 id grouping
 id groups
+id header_streak
 id header_title
+id header_today_words
 id help_text
 id hide_ime_id
 id hideable
