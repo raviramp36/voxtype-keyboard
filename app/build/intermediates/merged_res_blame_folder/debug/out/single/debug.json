@@ -1,0 +1,86 @@
+[
+    {
+        "merged": "com.voxtype.keyboard.app-merged_res-38:/layout_item_correction.xml.flat",
+        "source": "com.voxtype.keyboard.app-main-40:/layout/item_correction.xml"
+    },
+    {
+        "merged": "com.voxtype.keyboard.app-merged_res-38:/drawable_ic_language.xml.flat",
+        "source": "com.voxtype.keyboard.app-main-40:/drawable/ic_language.xml"
+    },
+    {
+        "merged": "com.voxtype.keyboard.app-merged_res-38:/drawable_button_idle.xml.flat",
+        "source": "com.voxtype.keyboard.app-main-40:/drawable/button_idle.xml"
+    },
+    {
+        "merged": "com.voxtype.keyboard.app-merged_res-38:/layout_keyboard_layout_simple.xml.flat",
+        "source": "com.voxtype.keyboard.app-main-40:/layout/keyboard_layout_simple.xml"
+    },
+    {
+        "merged": "com.voxtype.keyboard.app-merged_res-38:/layout_activity_main.xml.flat",
+        "source": "com.voxtype.keyboard.app-main-40:/layout/activity_main.xml"
+    },
+    {
+        "merged": "com.voxtype.keyboard.app-merged_res-38:/drawable_ic_mic.xml.flat",
+        "source": "com.voxtype.keyboard.app-main-40:/drawable/ic_mic.xml"
+    },
+    {
+        "merged": "com.voxtype.keyboard.app-merged_res-38:/drawable_ic_processing.xml.flat",
+        "source": "com.voxtype.keyboard.app-main-40:/drawable/ic_processing.xml"
+    },
+    {
+        "merged": "com.voxtype.keyboard.app-merged_res-38:/drawable_button_listening.xml.flat",
+        "source": "com.voxtype.keyboard.app-main-40:/drawable/button_listening.xml"
+    },
+    {
+        "merged": "com.voxtype.keyboard.app-merged_res-38:/drawable_ic_mic_active.xml.flat",
+        "source": "com.voxtype.keyboard.app-main-40:/drawable/ic_mic_active.xml"
+    },
+    {
+        "merged": "com.voxtype.keyboard.app-merged_res-38:/layout_activity_stats.xml.flat",
+        "source": "com.voxtype.keyboard.app-main-40:/layout/activity_stats.xml"
+    },
+    {
+        "merged": "com.voxtype.keyboard.app-merged_res-38:/layout_keyboard_layout.xml.flat",
+        "source": "com.voxtype.keyboard.app-main-40:/layout/keyboard_layout.xml"
+    },
+    {
+        "merged": "com.voxtype.keyboard.app-merged_res-38:/drawable_ic_settings.xml.flat",
+        "source": "com.voxtype.keyboard.app-main-40:/drawable/ic_settings.xml"
+    },
+    {
+        "merged": "com.voxtype.keyboard.app-merged_res-38:/drawable_ic_keyboard.xml.flat",
+        "source": "com.voxtype.keyboard.app-main-40:/drawable/ic_keyboard.xml"
+    },
+    {
+        "merged": "com.voxtype.keyboard.app-merged_res-38:/drawable_word_item_background.xml.flat",
+        "source": "com.voxtype.keyboard.app-main-40:/drawable/word_item_background.xml"
+    },
+    {
+        "merged": "com.voxtype.keyboard.app-merged_res-38:/drawable_button_recording.xml.flat",
+        "source": "com.voxtype.keyboard.app-main-40:/drawable/button_recording.xml"
+    },
+    {
+        "merged": "com.voxtype.keyboard.app-merged_res-38:/xml_data_extraction_rules.xml.flat",
+        "source": "com.voxtype.keyboard.app-main-40:/xml/data_extraction_rules.xml"
+    },
+    {
+        "merged": "com.voxtype.keyboard.app-merged_res-38:/xml_backup_rules.xml.flat",
+        "source": "com.voxtype.keyboard.app-main-40:/xml/backup_rules.xml"
+    },
+    {
+        "merged": "com.voxtype.keyboard.app-merged_res-38:/xml_method.xml.flat",
+        "source": "com.voxtype.keyboard.app-main-40:/xml/method.xml"
+    },
+    {
+        "merged": "com.voxtype.keyboard.app-merged_res-38:/drawable_button_processing.xml.flat",
+        "source": "com.voxtype.keyboard.app-main-40:/drawable/button_processing.xml"
+    },
+    {
+        "merged": "com.voxtype.keyboard.app-merged_res-38:/drawable_ic_clear.xml.flat",
+        "source": "com.voxtype.keyboard.app-main-40:/drawable/ic_clear.xml"
+    },
+    {
+        "merged": "com.voxtype.keyboard.app-merged_res-38:/layout_item_word.xml.flat",
+        "source": "com.voxtype.keyboard.app-main-40:/layout/item_word.xml"
+    }
+]

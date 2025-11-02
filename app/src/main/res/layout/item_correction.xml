@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="8dp"
+    android:layout_marginVertical="4dp"
+    app:cardElevation="2dp"
+    app:cardCornerRadius="4dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="12dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="4dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Original: "
+                android:textSize="14sp"
+                android:textColor="@android:color/darker_gray" />
+
+            <TextView
+                android:id="@+id/original_text"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="original"
+                android:textSize="14sp"
+                android:textColor="#FF5722" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="4dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Corrected: "
+                android:textSize="14sp"
+                android:textColor="@android:color/darker_gray" />
+
+            <TextView
+                android:id="@+id/corrected_text"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="corrected"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="#4CAF50" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/frequency_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:text="3x"
+            android:textSize="12sp"
+            android:textColor="@color/accent_color" />
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

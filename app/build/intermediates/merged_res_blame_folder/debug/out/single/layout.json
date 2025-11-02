@@ -1,0 +1,26 @@
+[
+    {
+        "merged": "com.voxtype.keyboard.app-mergeDebugResources-37:/layout/activity_main.xml",
+        "source": "com.voxtype.keyboard.app-main-40:/layout/activity_main.xml"
+    },
+    {
+        "merged": "com.voxtype.keyboard.app-mergeDebugResources-37:/layout/item_correction.xml",
+        "source": "com.voxtype.keyboard.app-main-40:/layout/item_correction.xml"
+    },
+    {
+        "merged": "com.voxtype.keyboard.app-mergeDebugResources-37:/layout/keyboard_layout.xml",
+        "source": "com.voxtype.keyboard.app-main-40:/layout/keyboard_layout.xml"
+    },
+    {
+        "merged": "com.voxtype.keyboard.app-mergeDebugResources-37:/layout/item_word.xml",
+        "source": "com.voxtype.keyboard.app-main-40:/layout/item_word.xml"
+    },
+    {
+        "merged": "com.voxtype.keyboard.app-mergeDebugResources-37:/layout/keyboard_layout_simple.xml",
+        "source": "com.voxtype.keyboard.app-main-40:/layout/keyboard_layout_simple.xml"
+    },
+    {
+        "merged": "com.voxtype.keyboard.app-mergeDebugResources-37:/layout/activity_stats.xml",
+        "source": "com.voxtype.keyboard.app-main-40:/layout/activity_stats.xml"
+    }
+]

@@ -1,0 +1,189 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.voxtype.keyboard"
+4    android:versionCode="1"
+5    android:versionName="1.0.0" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="26"
+9        android:targetSdkVersion="34" />
+10
+11    <!-- Permissions -->
+12    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+12-->/Users/ravikumar/Projects/voxtype/android-app/app/src/main/AndroidManifest.xml:6:5-71
+12-->/Users/ravikumar/Projects/voxtype/android-app/app/src/main/AndroidManifest.xml:6:22-68
+13    <uses-permission android:name="android.permission.INTERNET" />
+13-->/Users/ravikumar/Projects/voxtype/android-app/app/src/main/AndroidManifest.xml:7:5-67
+13-->/Users/ravikumar/Projects/voxtype/android-app/app/src/main/AndroidManifest.xml:7:22-64
+14    <uses-permission android:name="android.permission.VIBRATE" />
+14-->/Users/ravikumar/Projects/voxtype/android-app/app/src/main/AndroidManifest.xml:8:5-66
+14-->/Users/ravikumar/Projects/voxtype/android-app/app/src/main/AndroidManifest.xml:8:22-63
+15
+16    <permission
+16-->[androidx.core:core:1.12.0] /Users/ravikumar/.gradle/caches/transforms-3/2ccd268e0ca2e1cd10ec650ac8067a3e/transformed/core-1.12.0/AndroidManifest.xml:22:5-24:47
+17        android:name="com.voxtype.keyboard.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+17-->[androidx.core:core:1.12.0] /Users/ravikumar/.gradle/caches/transforms-3/2ccd268e0ca2e1cd10ec650ac8067a3e/transformed/core-1.12.0/AndroidManifest.xml:23:9-81
+18        android:protectionLevel="signature" />
+18-->[androidx.core:core:1.12.0] /Users/ravikumar/.gradle/caches/transforms-3/2ccd268e0ca2e1cd10ec650ac8067a3e/transformed/core-1.12.0/AndroidManifest.xml:24:9-44
+19
+20    <uses-permission android:name="com.voxtype.keyboard.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
+20-->[androidx.core:core:1.12.0] /Users/ravikumar/.gradle/caches/transforms-3/2ccd268e0ca2e1cd10ec650ac8067a3e/transformed/core-1.12.0/AndroidManifest.xml:26:5-97
+20-->[androidx.core:core:1.12.0] /Users/ravikumar/.gradle/caches/transforms-3/2ccd268e0ca2e1cd10ec650ac8067a3e/transformed/core-1.12.0/AndroidManifest.xml:26:22-94
+21
+22    <application
+22-->/Users/ravikumar/Projects/voxtype/android-app/app/src/main/AndroidManifest.xml:10:5-52:19
+23        android:allowBackup="true"
+23-->/Users/ravikumar/Projects/voxtype/android-app/app/src/main/AndroidManifest.xml:11:9-35
+24        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+24-->[androidx.core:core:1.12.0] /Users/ravikumar/.gradle/caches/transforms-3/2ccd268e0ca2e1cd10ec650ac8067a3e/transformed/core-1.12.0/AndroidManifest.xml:28:18-86
+25        android:dataExtractionRules="@xml/data_extraction_rules"
+25-->/Users/ravikumar/Projects/voxtype/android-app/app/src/main/AndroidManifest.xml:12:9-65
+26        android:debuggable="true"
+27        android:extractNativeLibs="false"
+28        android:fullBackupContent="@xml/backup_rules"
+28-->/Users/ravikumar/Projects/voxtype/android-app/app/src/main/AndroidManifest.xml:13:9-54
+29        android:icon="@drawable/ic_mic"
+29-->/Users/ravikumar/Projects/voxtype/android-app/app/src/main/AndroidManifest.xml:14:9-40
+30        android:label="@string/app_name"
+30-->/Users/ravikumar/Projects/voxtype/android-app/app/src/main/AndroidManifest.xml:15:9-41
+31        android:supportsRtl="true"
+31-->/Users/ravikumar/Projects/voxtype/android-app/app/src/main/AndroidManifest.xml:16:9-35
+32        android:theme="@style/Theme.VoxType" >
+32-->/Users/ravikumar/Projects/voxtype/android-app/app/src/main/AndroidManifest.xml:17:9-45
+33
+34        <!-- Main Settings Activity -->
+35        <activity
+35-->/Users/ravikumar/Projects/voxtype/android-app/app/src/main/AndroidManifest.xml:21:9-29:20
+36            android:name="com.voxtype.keyboard.MainActivity"
+36-->/Users/ravikumar/Projects/voxtype/android-app/app/src/main/AndroidManifest.xml:22:13-41
+37            android:exported="true"
+37-->/Users/ravikumar/Projects/voxtype/android-app/app/src/main/AndroidManifest.xml:23:13-36
+38            android:label="@string/app_name" >
+38-->/Users/ravikumar/Projects/voxtype/android-app/app/src/main/AndroidManifest.xml:24:13-45
+39            <intent-filter>
+39-->/Users/ravikumar/Projects/voxtype/android-app/app/src/main/AndroidManifest.xml:25:13-28:29
+40                <action android:name="android.intent.action.MAIN" />
+40-->/Users/ravikumar/Projects/voxtype/android-app/app/src/main/AndroidManifest.xml:26:17-69
+40-->/Users/ravikumar/Projects/voxtype/android-app/app/src/main/AndroidManifest.xml:26:25-66
+41
+42                <category android:name="android.intent.category.LAUNCHER" />
+42-->/Users/ravikumar/Projects/voxtype/android-app/app/src/main/AndroidManifest.xml:27:17-77
+42-->/Users/ravikumar/Projects/voxtype/android-app/app/src/main/AndroidManifest.xml:27:27-74
+43            </intent-filter>
+44        </activity>
+45
+46        <!-- Statistics Activity -->
+47        <activity
+47-->/Users/ravikumar/Projects/voxtype/android-app/app/src/main/AndroidManifest.xml:32:9-36:52
+48            android:name="com.voxtype.keyboard.StatsActivity"
+48-->/Users/ravikumar/Projects/voxtype/android-app/app/src/main/AndroidManifest.xml:33:13-42
+49            android:exported="false"
+49-->/Users/ravikumar/Projects/voxtype/android-app/app/src/main/AndroidManifest.xml:34:13-37
+50            android:label="VoxType Statistics"
+50-->/Users/ravikumar/Projects/voxtype/android-app/app/src/main/AndroidManifest.xml:35:13-47
+51            android:theme="@style/Theme.VoxType" />
+51-->/Users/ravikumar/Projects/voxtype/android-app/app/src/main/AndroidManifest.xml:36:13-49
+52
+53        <!-- Input Method Service with Whisper -->
+54        <service
+54-->/Users/ravikumar/Projects/voxtype/android-app/app/src/main/AndroidManifest.xml:39:9-50:19
+55            android:name="com.voxtype.keyboard.WhisperKeyboardService"
+55-->/Users/ravikumar/Projects/voxtype/android-app/app/src/main/AndroidManifest.xml:40:13-51
+56            android:exported="true"
+56-->/Users/ravikumar/Projects/voxtype/android-app/app/src/main/AndroidManifest.xml:41:13-36
+57            android:label="@string/voxtype_keyboard"
+57-->/Users/ravikumar/Projects/voxtype/android-app/app/src/main/AndroidManifest.xml:42:13-53
+58            android:permission="android.permission.BIND_INPUT_METHOD" >
+58-->/Users/ravikumar/Projects/voxtype/android-app/app/src/main/AndroidManifest.xml:43:13-70
+59            <intent-filter>
+59-->/Users/ravikumar/Projects/voxtype/android-app/app/src/main/AndroidManifest.xml:44:13-46:29
+60                <action android:name="android.view.InputMethod" />
+60-->/Users/ravikumar/Projects/voxtype/android-app/app/src/main/AndroidManifest.xml:45:17-67
+60-->/Users/ravikumar/Projects/voxtype/android-app/app/src/main/AndroidManifest.xml:45:25-64
+61            </intent-filter>
+62
+63            <meta-data
+63-->/Users/ravikumar/Projects/voxtype/android-app/app/src/main/AndroidManifest.xml:47:13-49:50
+64                android:name="android.view.im"
+64-->/Users/ravikumar/Projects/voxtype/android-app/app/src/main/AndroidManifest.xml:48:17-47
+65                android:resource="@xml/method" />
+65-->/Users/ravikumar/Projects/voxtype/android-app/app/src/main/AndroidManifest.xml:49:17-47
+66        </service>
+67
+68        <provider
+68-->[androidx.emoji2:emoji2:1.2.0] /Users/ravikumar/.gradle/caches/transforms-3/6f6fec51fc0bf858d6900b90dd62d6da/transformed/emoji2-1.2.0/AndroidManifest.xml:24:9-32:20
+69            android:name="androidx.startup.InitializationProvider"
+69-->[androidx.emoji2:emoji2:1.2.0] /Users/ravikumar/.gradle/caches/transforms-3/6f6fec51fc0bf858d6900b90dd62d6da/transformed/emoji2-1.2.0/AndroidManifest.xml:25:13-67
+70            android:authorities="com.voxtype.keyboard.androidx-startup"
+70-->[androidx.emoji2:emoji2:1.2.0] /Users/ravikumar/.gradle/caches/transforms-3/6f6fec51fc0bf858d6900b90dd62d6da/transformed/emoji2-1.2.0/AndroidManifest.xml:26:13-68
+71            android:exported="false" >
+71-->[androidx.emoji2:emoji2:1.2.0] /Users/ravikumar/.gradle/caches/transforms-3/6f6fec51fc0bf858d6900b90dd62d6da/transformed/emoji2-1.2.0/AndroidManifest.xml:27:13-37
+72            <meta-data
+72-->[androidx.emoji2:emoji2:1.2.0] /Users/ravikumar/.gradle/caches/transforms-3/6f6fec51fc0bf858d6900b90dd62d6da/transformed/emoji2-1.2.0/AndroidManifest.xml:29:13-31:52
+73                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+73-->[androidx.emoji2:emoji2:1.2.0] /Users/ravikumar/.gradle/caches/transforms-3/6f6fec51fc0bf858d6900b90dd62d6da/transformed/emoji2-1.2.0/AndroidManifest.xml:30:17-75
+74                android:value="androidx.startup" />
+74-->[androidx.emoji2:emoji2:1.2.0] /Users/ravikumar/.gradle/caches/transforms-3/6f6fec51fc0bf858d6900b90dd62d6da/transformed/emoji2-1.2.0/AndroidManifest.xml:31:17-49
+75            <meta-data
+75-->[androidx.lifecycle:lifecycle-process:2.7.0] /Users/ravikumar/.gradle/caches/transforms-3/de0aab144c5a415a89446dd83fe34e27/transformed/lifecycle-process-2.7.0/AndroidManifest.xml:29:13-31:52
+76                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+76-->[androidx.lifecycle:lifecycle-process:2.7.0] /Users/ravikumar/.gradle/caches/transforms-3/de0aab144c5a415a89446dd83fe34e27/transformed/lifecycle-process-2.7.0/AndroidManifest.xml:30:17-78
+77                android:value="androidx.startup" />
+77-->[androidx.lifecycle:lifecycle-process:2.7.0] /Users/ravikumar/.gradle/caches/transforms-3/de0aab144c5a415a89446dd83fe34e27/transformed/lifecycle-process-2.7.0/AndroidManifest.xml:31:17-49
+78            <meta-data
+78-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/ravikumar/.gradle/caches/transforms-3/90a5c045bb237d34bfde7528c354fcd3/transformed/profileinstaller-1.3.0/AndroidManifest.xml:29:13-31:52
+79                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
+79-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/ravikumar/.gradle/caches/transforms-3/90a5c045bb237d34bfde7528c354fcd3/transformed/profileinstaller-1.3.0/AndroidManifest.xml:30:17-85
+80                android:value="androidx.startup" />
+80-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/ravikumar/.gradle/caches/transforms-3/90a5c045bb237d34bfde7528c354fcd3/transformed/profileinstaller-1.3.0/AndroidManifest.xml:31:17-49
+81        </provider>
+82
+83        <service
+83-->[androidx.room:room-runtime:2.6.1] /Users/ravikumar/.gradle/caches/transforms-3/0a5328efc1945f93f92ee4f737dc2c1b/transformed/room-runtime-2.6.1/AndroidManifest.xml:24:9-28:63
+84            android:name="androidx.room.MultiInstanceInvalidationService"
+84-->[androidx.room:room-runtime:2.6.1] /Users/ravikumar/.gradle/caches/transforms-3/0a5328efc1945f93f92ee4f737dc2c1b/transformed/room-runtime-2.6.1/AndroidManifest.xml:25:13-74
+85            android:directBootAware="true"
+85-->[androidx.room:room-runtime:2.6.1] /Users/ravikumar/.gradle/caches/transforms-3/0a5328efc1945f93f92ee4f737dc2c1b/transformed/room-runtime-2.6.1/AndroidManifest.xml:26:13-43
+86            android:exported="false" />
+86-->[androidx.room:room-runtime:2.6.1] /Users/ravikumar/.gradle/caches/transforms-3/0a5328efc1945f93f92ee4f737dc2c1b/transformed/room-runtime-2.6.1/AndroidManifest.xml:27:13-37
+87
+88        <receiver
+88-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/ravikumar/.gradle/caches/transforms-3/90a5c045bb237d34bfde7528c354fcd3/transformed/profileinstaller-1.3.0/AndroidManifest.xml:34:9-52:20
+89            android:name="androidx.profileinstaller.ProfileInstallReceiver"
+89-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/ravikumar/.gradle/caches/transforms-3/90a5c045bb237d34bfde7528c354fcd3/transformed/profileinstaller-1.3.0/AndroidManifest.xml:35:13-76
+90            android:directBootAware="false"
+90-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/ravikumar/.gradle/caches/transforms-3/90a5c045bb237d34bfde7528c354fcd3/transformed/profileinstaller-1.3.0/AndroidManifest.xml:36:13-44
+91            android:enabled="true"
+91-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/ravikumar/.gradle/caches/transforms-3/90a5c045bb237d34bfde7528c354fcd3/transformed/profileinstaller-1.3.0/AndroidManifest.xml:37:13-35
+92            android:exported="true"
+92-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/ravikumar/.gradle/caches/transforms-3/90a5c045bb237d34bfde7528c354fcd3/transformed/profileinstaller-1.3.0/AndroidManifest.xml:38:13-36
+93            android:permission="android.permission.DUMP" >
+93-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/ravikumar/.gradle/caches/transforms-3/90a5c045bb237d34bfde7528c354fcd3/transformed/profileinstaller-1.3.0/AndroidManifest.xml:39:13-57
+94            <intent-filter>
+94-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/ravikumar/.gradle/caches/transforms-3/90a5c045bb237d34bfde7528c354fcd3/transformed/profileinstaller-1.3.0/AndroidManifest.xml:40:13-42:29
+95                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
+95-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/ravikumar/.gradle/caches/transforms-3/90a5c045bb237d34bfde7528c354fcd3/transformed/profileinstaller-1.3.0/AndroidManifest.xml:41:17-91
+95-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/ravikumar/.gradle/caches/transforms-3/90a5c045bb237d34bfde7528c354fcd3/transformed/profileinstaller-1.3.0/AndroidManifest.xml:41:25-88
+96            </intent-filter>
+97            <intent-filter>
+97-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/ravikumar/.gradle/caches/transforms-3/90a5c045bb237d34bfde7528c354fcd3/transformed/profileinstaller-1.3.0/AndroidManifest.xml:43:13-45:29
+98                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
+98-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/ravikumar/.gradle/caches/transforms-3/90a5c045bb237d34bfde7528c354fcd3/transformed/profileinstaller-1.3.0/AndroidManifest.xml:44:17-85
+98-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/ravikumar/.gradle/caches/transforms-3/90a5c045bb237d34bfde7528c354fcd3/transformed/profileinstaller-1.3.0/AndroidManifest.xml:44:25-82
+99            </intent-filter>
+100            <intent-filter>
+100-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/ravikumar/.gradle/caches/transforms-3/90a5c045bb237d34bfde7528c354fcd3/transformed/profileinstaller-1.3.0/AndroidManifest.xml:46:13-48:29
+101                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
+101-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/ravikumar/.gradle/caches/transforms-3/90a5c045bb237d34bfde7528c354fcd3/transformed/profileinstaller-1.3.0/AndroidManifest.xml:47:17-88
+101-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/ravikumar/.gradle/caches/transforms-3/90a5c045bb237d34bfde7528c354fcd3/transformed/profileinstaller-1.3.0/AndroidManifest.xml:47:25-85
+102            </intent-filter>
+103            <intent-filter>
+103-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/ravikumar/.gradle/caches/transforms-3/90a5c045bb237d34bfde7528c354fcd3/transformed/profileinstaller-1.3.0/AndroidManifest.xml:49:13-51:29
+104                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
+104-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/ravikumar/.gradle/caches/transforms-3/90a5c045bb237d34bfde7528c354fcd3/transformed/profileinstaller-1.3.0/AndroidManifest.xml:50:17-95
+104-->[androidx.profileinstaller:profileinstaller:1.3.0] /Users/ravikumar/.gradle/caches/transforms-3/90a5c045bb237d34bfde7528c354fcd3/transformed/profileinstaller-1.3.0/AndroidManifest.xml:50:25-92
+105            </intent-filter>
+106        </receiver>
+107    </application>
+108
+109</manifest>

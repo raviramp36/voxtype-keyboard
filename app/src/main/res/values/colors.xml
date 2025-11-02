@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Main Colors -->
+    <color name="primary">#1E88E5</color>
+    <color name="primary_color">#1E88E5</color>
+    <color name="primary_dark">#1565C0</color>
+    <color name="accent">#00ACC1</color>
+    <color name="accent_color">#00BCD4</color>
+    
+    <!-- Keyboard Colors -->
+    <color name="keyboard_background">#F5F5F5</color>
+    <color name="keyboard_background_dark">#212121</color>
+    
+    <!-- Button States -->
+    <color name="button_idle">#2196F3</color>
+    <color name="button_recording">#F44336</color>
+    <color name="button_listening">#FF9800</color>
+    <color name="button_processing">#FFC107</color>
+    <color name="button_success">#4CAF50</color>
+    
+    <!-- Text Colors -->
+    <color name="text_primary">#212121</color>
+    <color name="text_secondary">#757575</color>
+    <color name="status_text">#424242</color>
+    <color name="help_text">#9E9E9E</color>
+    
+    <!-- System Colors -->
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="transparent">#00000000</color>
+    <color name="divider">#E0E0E0</color>
+</resources>
