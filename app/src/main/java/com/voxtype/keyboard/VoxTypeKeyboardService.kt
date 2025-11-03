@@ -20,7 +20,11 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
+import com.voxtype.keyboard.database.TranscriptionEntry
+import com.voxtype.keyboard.database.VoxTypeDatabase
 import kotlinx.coroutines.*
+import java.util.Date
 import java.util.Locale
 
 class VoxTypeKeyboardService : InputMethodService() {
@@ -31,15 +35,18 @@ class VoxTypeKeyboardService : InputMethodService() {
     private lateinit var progressBar: ProgressBar
     private lateinit var speechRecognizer: SpeechRecognizer
     private lateinit var groqProcessor: GroqProcessor
+    private lateinit var database: VoxTypeDatabase
     
     private var isRecording = false
     private val mainScope = CoroutineScope(Dispatchers.Main + Job())
     private val handler = Handler(Looper.getMainLooper())
+    private var currentRecordingStartTime: Long = 0
     
     override fun onCreate() {
         super.onCreate()
         speechRecognizer = SpeechRecognizer.createSpeechRecognizer(this)
         groqProcessor = GroqProcessor(this)
+        database = VoxTypeDatabase.getInstance(this)
         setupSpeechRecognizer()
     }
     
@@ -103,6 +110,11 @@ class VoxTypeKeyboardService : InputMethodService() {
             imm.showInputMethodPicker()
         }
         
+        keyboardView.findViewById<View>(R.id.backspace_button)?.setOnClickListener {
+            // Handle backspace functionality
+            handleBackspace()
+        }
+        
         keyboardView.findViewById<View>(R.id.clear_button)?.setOnClickListener {
             // Clear current text
             currentInputConnection?.deleteSurroundingText(1000, 1000)
@@ -129,6 +141,7 @@ class VoxTypeKeyboardService : InputMethodService() {
         }
         
         isRecording = true
+        currentRecordingStartTime = System.currentTimeMillis()
         updateUI(RecordingState.RECORDING)
         
         // Support for Indian English
@@ -258,6 +271,9 @@ class VoxTypeKeyboardService : InputMethodService() {
                 // Insert the enhanced text
                 currentInputConnection?.commitText(enhancedText, 1)
                 
+                // Save transcription to history
+                saveTranscriptionToHistory(text, enhancedText, mode)
+                
                 showStatus("Done!")
                 updateUI(RecordingState.IDLE)
                 
@@ -280,22 +296,22 @@ class VoxTypeKeyboardService : InputMethodService() {
             when (state) {
                 RecordingState.IDLE -> {
                     voiceButton.text = "🎤"
-                    voiceButton.setBackgroundResource(R.drawable.button_idle)
+                    voiceButton.setBackgroundResource(R.drawable.glass_button_idle)
                     progressBar.visibility = View.GONE
                 }
                 RecordingState.RECORDING -> {
                     voiceButton.text = "🔴"
-                    voiceButton.setBackgroundResource(R.drawable.button_recording)
+                    voiceButton.setBackgroundResource(R.drawable.glass_button_recording)
                     progressBar.visibility = View.VISIBLE
                 }
                 RecordingState.LISTENING -> {
                     voiceButton.text = "👂"
-                    voiceButton.setBackgroundResource(R.drawable.button_listening)
+                    voiceButton.setBackgroundResource(R.drawable.glass_button_listening)
                     progressBar.visibility = View.VISIBLE
                 }
                 RecordingState.PROCESSING -> {
                     voiceButton.text = "⏳"
-                    voiceButton.setBackgroundResource(R.drawable.button_processing)
+                    voiceButton.setBackgroundResource(R.drawable.glass_button_processing)
                     progressBar.visibility = View.VISIBLE
                 }
             }
@@ -388,6 +404,59 @@ class VoxTypeKeyboardService : InputMethodService() {
             
             // Default
             else -> GroqProcessor.TextMode.GENERAL
+        }
+    }
+    
+    private fun handleBackspace() {
+        val ic = currentInputConnection ?: return
+        
+        // Get text before cursor to determine what to delete
+        val selectedText = ic.getSelectedText(0)
+        
+        if (!selectedText.isNullOrEmpty()) {
+            // Delete selected text
+            ic.commitText("", 1)
+        } else {
+            // Delete character before cursor
+            ic.deleteSurroundingText(1, 0)
+        }
+        
+        // Provide haptic feedback
+        vibrate(30)
+    }
+    
+    private fun saveTranscriptionToHistory(
+        rawTranscription: String,
+        enhancedText: String,
+        mode: GroqProcessor.TextMode
+    ) {
+        mainScope.launch {
+            try {
+                val editorInfo = currentInputEditorInfo
+                val appPackage = editorInfo?.packageName ?: ""
+                val duration = if (currentRecordingStartTime > 0) {
+                    (System.currentTimeMillis() - currentRecordingStartTime) / 1000f
+                } else {
+                    null
+                }
+                
+                val transcriptionEntry = TranscriptionEntry(
+                    timestamp = Date(),
+                    rawTranscription = rawTranscription,
+                    finalText = enhancedText,
+                    wordCount = enhancedText.split("\\s+".toRegex()).size,
+                    characterCount = enhancedText.length,
+                    duration = duration,
+                    appPackage = appPackage,
+                    textMode = mode.name
+                )
+                
+                database.transcriptionDao().insert(transcriptionEntry)
+                
+            } catch (e: Exception) {
+                // Log error but don't interrupt user experience
+                android.util.Log.e("VoxTypeKeyboard", "Failed to save transcription", e)
+            }
         }
     }
 }

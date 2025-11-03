@@ -11,6 +11,16 @@ import androidx.room.util.DBUtil;
 import androidx.room.util.TableInfo;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 import androidx.sqlite.db.SupportSQLiteOpenHelper;
+import com.voxtype.keyboard.database.dao.DictionaryWordDao;
+import com.voxtype.keyboard.database.dao.DictionaryWordDao_Impl;
+import com.voxtype.keyboard.database.dao.SettingsPreferenceDao;
+import com.voxtype.keyboard.database.dao.SettingsPreferenceDao_Impl;
+import com.voxtype.keyboard.database.dao.SnippetDao;
+import com.voxtype.keyboard.database.dao.SnippetDao_Impl;
+import com.voxtype.keyboard.database.dao.UserDictionaryEntryDao;
+import com.voxtype.keyboard.database.dao.UserDictionaryEntryDao_Impl;
+import com.voxtype.keyboard.database.dao.UserStatisticsDao;
+import com.voxtype.keyboard.database.dao.UserStatisticsDao_Impl;
 import java.lang.Class;
 import java.lang.Override;
 import java.lang.String;
@@ -35,10 +45,20 @@ public final class VoxTypeDatabase_Impl extends VoxTypeDatabase {
 
   private volatile UserDictionaryDao _userDictionaryDao;
 
+  private volatile DictionaryWordDao _dictionaryWordDao;
+
+  private volatile SnippetDao _snippetDao;
+
+  private volatile UserStatisticsDao _userStatisticsDao;
+
+  private volatile SettingsPreferenceDao _settingsPreferenceDao;
+
+  private volatile UserDictionaryEntryDao _userDictionaryEntryDao;
+
   @Override
   @NonNull
   protected SupportSQLiteOpenHelper createOpenHelper(@NonNull final DatabaseConfiguration config) {
-    final SupportSQLiteOpenHelper.Callback _openCallback = new RoomOpenHelper(config, new RoomOpenHelper.Delegate(1) {
+    final SupportSQLiteOpenHelper.Callback _openCallback = new RoomOpenHelper(config, new RoomOpenHelper.Delegate(2) {
       @Override
       public void createAllTables(@NonNull final SupportSQLiteDatabase db) {
         db.execSQL("CREATE TABLE IF NOT EXISTS `transcriptions` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `timestamp` INTEGER NOT NULL, `originalAudio` TEXT, `rawTranscription` TEXT NOT NULL, `finalText` TEXT NOT NULL, `userEditedText` TEXT, `wordCount` INTEGER NOT NULL, `characterCount` INTEGER NOT NULL, `duration` REAL, `appPackage` TEXT, `textMode` TEXT NOT NULL)");
@@ -50,8 +70,22 @@ public final class VoxTypeDatabase_Impl extends VoxTypeDatabase {
         db.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS `index_word_frequency_word` ON `word_frequency` (`word`)");
         db.execSQL("CREATE TABLE IF NOT EXISTS `user_dictionary` (`word` TEXT NOT NULL, `replacement` TEXT, `isName` INTEGER NOT NULL, `isPhraseShortcut` INTEGER NOT NULL, `language` TEXT NOT NULL, `addedDate` INTEGER NOT NULL, PRIMARY KEY(`word`))");
         db.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS `index_user_dictionary_word` ON `user_dictionary` (`word`)");
+        db.execSQL("CREATE TABLE IF NOT EXISTS `dictionary_words` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `word` TEXT NOT NULL, `language` TEXT NOT NULL, `frequency` INTEGER NOT NULL, `createdDate` INTEGER NOT NULL, `lastUsed` INTEGER NOT NULL)");
+        db.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS `index_dictionary_words_word` ON `dictionary_words` (`word`)");
+        db.execSQL("CREATE INDEX IF NOT EXISTS `index_dictionary_words_language` ON `dictionary_words` (`language`)");
+        db.execSQL("CREATE INDEX IF NOT EXISTS `index_dictionary_words_frequency` ON `dictionary_words` (`frequency`)");
+        db.execSQL("CREATE TABLE IF NOT EXISTS `snippets` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `trigger` TEXT NOT NULL, `content` TEXT NOT NULL, `category` TEXT NOT NULL, `usageCount` INTEGER NOT NULL, `createdDate` INTEGER NOT NULL)");
+        db.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS `index_snippets_trigger` ON `snippets` (`trigger`)");
+        db.execSQL("CREATE INDEX IF NOT EXISTS `index_snippets_category` ON `snippets` (`category`)");
+        db.execSQL("CREATE INDEX IF NOT EXISTS `index_snippets_usageCount` ON `snippets` (`usageCount`)");
+        db.execSQL("CREATE TABLE IF NOT EXISTS `user_statistics` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `date` TEXT NOT NULL, `wordsTyped` INTEGER NOT NULL, `wpm` REAL NOT NULL, `appsUsed` TEXT NOT NULL, `languagesUsed` TEXT NOT NULL)");
+        db.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS `index_user_statistics_date` ON `user_statistics` (`date`)");
+        db.execSQL("CREATE TABLE IF NOT EXISTS `settings_preferences` (`key` TEXT NOT NULL, `value` TEXT NOT NULL, PRIMARY KEY(`key`))");
+        db.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS `index_settings_preferences_key` ON `settings_preferences` (`key`)");
+        db.execSQL("CREATE TABLE IF NOT EXISTS `user_dictionary_entries` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `word` TEXT NOT NULL, `replacement` TEXT NOT NULL, `createdDate` INTEGER NOT NULL)");
+        db.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS `index_user_dictionary_entries_word` ON `user_dictionary_entries` (`word`)");
         db.execSQL("CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)");
-        db.execSQL("INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '7245e5bb138a7113a8f738cd5e0c2227')");
+        db.execSQL("INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'd3fbfe2ac67e5086384377b934e75e68')");
       }
 
       @Override
@@ -61,6 +95,11 @@ public final class VoxTypeDatabase_Impl extends VoxTypeDatabase {
         db.execSQL("DROP TABLE IF EXISTS `daily_stats`");
         db.execSQL("DROP TABLE IF EXISTS `word_frequency`");
         db.execSQL("DROP TABLE IF EXISTS `user_dictionary`");
+        db.execSQL("DROP TABLE IF EXISTS `dictionary_words`");
+        db.execSQL("DROP TABLE IF EXISTS `snippets`");
+        db.execSQL("DROP TABLE IF EXISTS `user_statistics`");
+        db.execSQL("DROP TABLE IF EXISTS `settings_preferences`");
+        db.execSQL("DROP TABLE IF EXISTS `user_dictionary_entries`");
         final List<? extends RoomDatabase.Callback> _callbacks = mCallbacks;
         if (_callbacks != null) {
           for (RoomDatabase.Callback _callback : _callbacks) {
@@ -195,9 +234,92 @@ public final class VoxTypeDatabase_Impl extends VoxTypeDatabase {
                   + " Expected:\n" + _infoUserDictionary + "\n"
                   + " Found:\n" + _existingUserDictionary);
         }
+        final HashMap<String, TableInfo.Column> _columnsDictionaryWords = new HashMap<String, TableInfo.Column>(6);
+        _columnsDictionaryWords.put("id", new TableInfo.Column("id", "INTEGER", true, 1, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsDictionaryWords.put("word", new TableInfo.Column("word", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsDictionaryWords.put("language", new TableInfo.Column("language", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsDictionaryWords.put("frequency", new TableInfo.Column("frequency", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsDictionaryWords.put("createdDate", new TableInfo.Column("createdDate", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsDictionaryWords.put("lastUsed", new TableInfo.Column("lastUsed", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        final HashSet<TableInfo.ForeignKey> _foreignKeysDictionaryWords = new HashSet<TableInfo.ForeignKey>(0);
+        final HashSet<TableInfo.Index> _indicesDictionaryWords = new HashSet<TableInfo.Index>(3);
+        _indicesDictionaryWords.add(new TableInfo.Index("index_dictionary_words_word", true, Arrays.asList("word"), Arrays.asList("ASC")));
+        _indicesDictionaryWords.add(new TableInfo.Index("index_dictionary_words_language", false, Arrays.asList("language"), Arrays.asList("ASC")));
+        _indicesDictionaryWords.add(new TableInfo.Index("index_dictionary_words_frequency", false, Arrays.asList("frequency"), Arrays.asList("ASC")));
+        final TableInfo _infoDictionaryWords = new TableInfo("dictionary_words", _columnsDictionaryWords, _foreignKeysDictionaryWords, _indicesDictionaryWords);
+        final TableInfo _existingDictionaryWords = TableInfo.read(db, "dictionary_words");
+        if (!_infoDictionaryWords.equals(_existingDictionaryWords)) {
+          return new RoomOpenHelper.ValidationResult(false, "dictionary_words(com.voxtype.keyboard.database.entities.DictionaryWord).\n"
+                  + " Expected:\n" + _infoDictionaryWords + "\n"
+                  + " Found:\n" + _existingDictionaryWords);
+        }
+        final HashMap<String, TableInfo.Column> _columnsSnippets = new HashMap<String, TableInfo.Column>(6);
+        _columnsSnippets.put("id", new TableInfo.Column("id", "INTEGER", true, 1, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsSnippets.put("trigger", new TableInfo.Column("trigger", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsSnippets.put("content", new TableInfo.Column("content", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsSnippets.put("category", new TableInfo.Column("category", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsSnippets.put("usageCount", new TableInfo.Column("usageCount", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsSnippets.put("createdDate", new TableInfo.Column("createdDate", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        final HashSet<TableInfo.ForeignKey> _foreignKeysSnippets = new HashSet<TableInfo.ForeignKey>(0);
+        final HashSet<TableInfo.Index> _indicesSnippets = new HashSet<TableInfo.Index>(3);
+        _indicesSnippets.add(new TableInfo.Index("index_snippets_trigger", true, Arrays.asList("trigger"), Arrays.asList("ASC")));
+        _indicesSnippets.add(new TableInfo.Index("index_snippets_category", false, Arrays.asList("category"), Arrays.asList("ASC")));
+        _indicesSnippets.add(new TableInfo.Index("index_snippets_usageCount", false, Arrays.asList("usageCount"), Arrays.asList("ASC")));
+        final TableInfo _infoSnippets = new TableInfo("snippets", _columnsSnippets, _foreignKeysSnippets, _indicesSnippets);
+        final TableInfo _existingSnippets = TableInfo.read(db, "snippets");
+        if (!_infoSnippets.equals(_existingSnippets)) {
+          return new RoomOpenHelper.ValidationResult(false, "snippets(com.voxtype.keyboard.database.entities.Snippet).\n"
+                  + " Expected:\n" + _infoSnippets + "\n"
+                  + " Found:\n" + _existingSnippets);
+        }
+        final HashMap<String, TableInfo.Column> _columnsUserStatistics = new HashMap<String, TableInfo.Column>(6);
+        _columnsUserStatistics.put("id", new TableInfo.Column("id", "INTEGER", true, 1, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsUserStatistics.put("date", new TableInfo.Column("date", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsUserStatistics.put("wordsTyped", new TableInfo.Column("wordsTyped", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsUserStatistics.put("wpm", new TableInfo.Column("wpm", "REAL", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsUserStatistics.put("appsUsed", new TableInfo.Column("appsUsed", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsUserStatistics.put("languagesUsed", new TableInfo.Column("languagesUsed", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        final HashSet<TableInfo.ForeignKey> _foreignKeysUserStatistics = new HashSet<TableInfo.ForeignKey>(0);
+        final HashSet<TableInfo.Index> _indicesUserStatistics = new HashSet<TableInfo.Index>(1);
+        _indicesUserStatistics.add(new TableInfo.Index("index_user_statistics_date", true, Arrays.asList("date"), Arrays.asList("ASC")));
+        final TableInfo _infoUserStatistics = new TableInfo("user_statistics", _columnsUserStatistics, _foreignKeysUserStatistics, _indicesUserStatistics);
+        final TableInfo _existingUserStatistics = TableInfo.read(db, "user_statistics");
+        if (!_infoUserStatistics.equals(_existingUserStatistics)) {
+          return new RoomOpenHelper.ValidationResult(false, "user_statistics(com.voxtype.keyboard.database.entities.UserStatistics).\n"
+                  + " Expected:\n" + _infoUserStatistics + "\n"
+                  + " Found:\n" + _existingUserStatistics);
+        }
+        final HashMap<String, TableInfo.Column> _columnsSettingsPreferences = new HashMap<String, TableInfo.Column>(2);
+        _columnsSettingsPreferences.put("key", new TableInfo.Column("key", "TEXT", true, 1, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsSettingsPreferences.put("value", new TableInfo.Column("value", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        final HashSet<TableInfo.ForeignKey> _foreignKeysSettingsPreferences = new HashSet<TableInfo.ForeignKey>(0);
+        final HashSet<TableInfo.Index> _indicesSettingsPreferences = new HashSet<TableInfo.Index>(1);
+        _indicesSettingsPreferences.add(new TableInfo.Index("index_settings_preferences_key", true, Arrays.asList("key"), Arrays.asList("ASC")));
+        final TableInfo _infoSettingsPreferences = new TableInfo("settings_preferences", _columnsSettingsPreferences, _foreignKeysSettingsPreferences, _indicesSettingsPreferences);
+        final TableInfo _existingSettingsPreferences = TableInfo.read(db, "settings_preferences");
+        if (!_infoSettingsPreferences.equals(_existingSettingsPreferences)) {
+          return new RoomOpenHelper.ValidationResult(false, "settings_preferences(com.voxtype.keyboard.database.entities.SettingsPreference).\n"
+                  + " Expected:\n" + _infoSettingsPreferences + "\n"
+                  + " Found:\n" + _existingSettingsPreferences);
+        }
+        final HashMap<String, TableInfo.Column> _columnsUserDictionaryEntries = new HashMap<String, TableInfo.Column>(4);
+        _columnsUserDictionaryEntries.put("id", new TableInfo.Column("id", "INTEGER", true, 1, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsUserDictionaryEntries.put("word", new TableInfo.Column("word", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsUserDictionaryEntries.put("replacement", new TableInfo.Column("replacement", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsUserDictionaryEntries.put("createdDate", new TableInfo.Column("createdDate", "INTEGER", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        final HashSet<TableInfo.ForeignKey> _foreignKeysUserDictionaryEntries = new HashSet<TableInfo.ForeignKey>(0);
+        final HashSet<TableInfo.Index> _indicesUserDictionaryEntries = new HashSet<TableInfo.Index>(1);
+        _indicesUserDictionaryEntries.add(new TableInfo.Index("index_user_dictionary_entries_word", true, Arrays.asList("word"), Arrays.asList("ASC")));
+        final TableInfo _infoUserDictionaryEntries = new TableInfo("user_dictionary_entries", _columnsUserDictionaryEntries, _foreignKeysUserDictionaryEntries, _indicesUserDictionaryEntries);
+        final TableInfo _existingUserDictionaryEntries = TableInfo.read(db, "user_dictionary_entries");
+        if (!_infoUserDictionaryEntries.equals(_existingUserDictionaryEntries)) {
+          return new RoomOpenHelper.ValidationResult(false, "user_dictionary_entries(com.voxtype.keyboard.database.entities.UserDictionaryEntry).\n"
+                  + " Expected:\n" + _infoUserDictionaryEntries + "\n"
+                  + " Found:\n" + _existingUserDictionaryEntries);
+        }
         return new RoomOpenHelper.ValidationResult(true, null);
       }
-    }, "7245e5bb138a7113a8f738cd5e0c2227", "186cd7e04b99953fb844a5f46b3ee4eb");
+    }, "d3fbfe2ac67e5086384377b934e75e68", "dc90a42cdb83de1ec5a807035a9e6bf5");
     final SupportSQLiteOpenHelper.Configuration _sqliteConfig = SupportSQLiteOpenHelper.Configuration.builder(config.context).name(config.name).callback(_openCallback).build();
     final SupportSQLiteOpenHelper _helper = config.sqliteOpenHelperFactory.create(_sqliteConfig);
     return _helper;
@@ -208,7 +330,7 @@ public final class VoxTypeDatabase_Impl extends VoxTypeDatabase {
   protected InvalidationTracker createInvalidationTracker() {
     final HashMap<String, String> _shadowTablesMap = new HashMap<String, String>(0);
     final HashMap<String, Set<String>> _viewTables = new HashMap<String, Set<String>>(0);
-    return new InvalidationTracker(this, _shadowTablesMap, _viewTables, "transcriptions","corrections","daily_stats","word_frequency","user_dictionary");
+    return new InvalidationTracker(this, _shadowTablesMap, _viewTables, "transcriptions","corrections","daily_stats","word_frequency","user_dictionary","dictionary_words","snippets","user_statistics","settings_preferences","user_dictionary_entries");
   }
 
   @Override
@@ -222,6 +344,11 @@ public final class VoxTypeDatabase_Impl extends VoxTypeDatabase {
       _db.execSQL("DELETE FROM `daily_stats`");
       _db.execSQL("DELETE FROM `word_frequency`");
       _db.execSQL("DELETE FROM `user_dictionary`");
+      _db.execSQL("DELETE FROM `dictionary_words`");
+      _db.execSQL("DELETE FROM `snippets`");
+      _db.execSQL("DELETE FROM `user_statistics`");
+      _db.execSQL("DELETE FROM `settings_preferences`");
+      _db.execSQL("DELETE FROM `user_dictionary_entries`");
       super.setTransactionSuccessful();
     } finally {
       super.endTransaction();
@@ -241,6 +368,11 @@ public final class VoxTypeDatabase_Impl extends VoxTypeDatabase {
     _typeConvertersMap.put(StatsDao.class, StatsDao_Impl.getRequiredConverters());
     _typeConvertersMap.put(WordFrequencyDao.class, WordFrequencyDao_Impl.getRequiredConverters());
     _typeConvertersMap.put(UserDictionaryDao.class, UserDictionaryDao_Impl.getRequiredConverters());
+    _typeConvertersMap.put(DictionaryWordDao.class, DictionaryWordDao_Impl.getRequiredConverters());
+    _typeConvertersMap.put(SnippetDao.class, SnippetDao_Impl.getRequiredConverters());
+    _typeConvertersMap.put(UserStatisticsDao.class, UserStatisticsDao_Impl.getRequiredConverters());
+    _typeConvertersMap.put(SettingsPreferenceDao.class, SettingsPreferenceDao_Impl.getRequiredConverters());
+    _typeConvertersMap.put(UserDictionaryEntryDao.class, UserDictionaryEntryDao_Impl.getRequiredConverters());
     return _typeConvertersMap;
   }
 
@@ -325,6 +457,76 @@ public final class VoxTypeDatabase_Impl extends VoxTypeDatabase {
           _userDictionaryDao = new UserDictionaryDao_Impl(this);
         }
         return _userDictionaryDao;
+      }
+    }
+  }
+
+  @Override
+  public DictionaryWordDao dictionaryWordDao() {
+    if (_dictionaryWordDao != null) {
+      return _dictionaryWordDao;
+    } else {
+      synchronized(this) {
+        if(_dictionaryWordDao == null) {
+          _dictionaryWordDao = new DictionaryWordDao_Impl(this);
+        }
+        return _dictionaryWordDao;
+      }
+    }
+  }
+
+  @Override
+  public SnippetDao snippetDao() {
+    if (_snippetDao != null) {
+      return _snippetDao;
+    } else {
+      synchronized(this) {
+        if(_snippetDao == null) {
+          _snippetDao = new SnippetDao_Impl(this);
+        }
+        return _snippetDao;
+      }
+    }
+  }
+
+  @Override
+  public UserStatisticsDao userStatisticsDao() {
+    if (_userStatisticsDao != null) {
+      return _userStatisticsDao;
+    } else {
+      synchronized(this) {
+        if(_userStatisticsDao == null) {
+          _userStatisticsDao = new UserStatisticsDao_Impl(this);
+        }
+        return _userStatisticsDao;
+      }
+    }
+  }
+
+  @Override
+  public SettingsPreferenceDao settingsPreferenceDao() {
+    if (_settingsPreferenceDao != null) {
+      return _settingsPreferenceDao;
+    } else {
+      synchronized(this) {
+        if(_settingsPreferenceDao == null) {
+          _settingsPreferenceDao = new SettingsPreferenceDao_Impl(this);
+        }
+        return _settingsPreferenceDao;
+      }
+    }
+  }
+
+  @Override
+  public UserDictionaryEntryDao userDictionaryEntryDao() {
+    if (_userDictionaryEntryDao != null) {
+      return _userDictionaryEntryDao;
+    } else {
+      synchronized(this) {
+        if(_userDictionaryEntryDao == null) {
+          _userDictionaryEntryDao = new UserDictionaryEntryDao_Impl(this);
+        }
+        return _userDictionaryEntryDao;
       }
     }
   }

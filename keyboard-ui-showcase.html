@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VoxType Keyboard UI Design Showcase</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+        
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+            animation: fadeInDown 0.8s ease;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .showcase-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            justify-content: center;
+            max-width: 1400px;
+            width: 100%;
+        }
+        
+        .keyboard-option {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+            width: 400px;
+            animation: fadeInUp 0.8s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .keyboard-option:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 30px 80px rgba(0,0,0,0.3);
+        }
+        
+        .option-title {
+            font-size: 1.5em;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .option-description {
+            color: #666;
+            margin-bottom: 20px;
+            font-size: 0.95em;
+        }
+        
+        .keyboard-preview {
+            background: #1a1a1a;
+            border-radius: 15px;
+            padding: 20px;
+            height: 200px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Option 1: Glassmorphism Wave */
+        .keyboard-glass {
+            background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.2);
+            position: relative;
+        }
+        
+        .glass-wave {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            background: linear-gradient(90deg, #667eea, #764ba2, #f093fb, #f5576c);
+            background-size: 400% 100%;
+            animation: waveGradient 8s ease infinite;
+            clip-path: polygon(0 50%, 100% 30%, 100% 100%, 0% 100%);
+            opacity: 0.8;
+        }
+        
+        .glass-button {
+            width: 80px;
+            height: 80px;
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .glass-button:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translate(-50%, -50%) scale(1.1);
+        }
+        
+        .glass-button svg {
+            width: 40px;
+            height: 40px;
+            fill: white;
+        }
+        
+        /* Option 2: Neon Pulse */
+        .keyboard-neon {
+            background: #0a0a0a;
+            position: relative;
+        }
+        
+        .neon-button {
+            width: 90px;
+            height: 90px;
+            background: #111;
+            border: 2px solid #00ffff;
+            border-radius: 20px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            cursor: pointer;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .neon-button::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #00ffff, #ff00ff, #00ff00, #ffff00);
+            border-radius: 20px;
+            z-index: -1;
+            animation: neonRotate 3s linear infinite;
+            filter: blur(10px);
+        }
+        
+        .neon-pulse {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(0,255,255,0.4) 0%, transparent 70%);
+            animation: pulse 2s infinite;
+        }
+        
+        .neon-mic {
+            width: 50px;
+            height: 50px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+        }
+        
+        /* Option 3: Liquid Morph */
+        .keyboard-liquid {
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            position: relative;
+        }
+        
+        .liquid-blob {
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        .blob-shape {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #f093fb, #f5576c);
+            border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+            animation: morphing 8s ease-in-out infinite;
+            box-shadow: 0 20px 40px rgba(240, 147, 251, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        
+        .blob-shape svg {
+            width: 50px;
+            height: 50px;
+            fill: white;
+            z-index: 10;
+        }
+        
+        /* Option 4: Particle Field */
+        .keyboard-particle {
+            background: #000;
+            position: relative;
+        }
+        
+        .particle-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: white;
+            border-radius: 50%;
+            opacity: 0;
+            animation: floatParticle 4s infinite;
+        }
+        
+        .particle:nth-child(1) { left: 10%; animation-delay: 0s; }
+        .particle:nth-child(2) { left: 20%; animation-delay: 0.5s; }
+        .particle:nth-child(3) { left: 30%; animation-delay: 1s; }
+        .particle:nth-child(4) { left: 40%; animation-delay: 1.5s; }
+        .particle:nth-child(5) { left: 50%; animation-delay: 2s; }
+        .particle:nth-child(6) { left: 60%; animation-delay: 2.5s; }
+        .particle:nth-child(7) { left: 70%; animation-delay: 3s; }
+        .particle:nth-child(8) { left: 80%; animation-delay: 3.5s; }
+        
+        .particle-button {
+            width: 100px;
+            height: 100px;
+            background: radial-gradient(circle, #4a00e0, #8e2de2);
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            cursor: pointer;
+            box-shadow: 0 0 60px rgba(142, 45, 226, 0.8);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Option 5: Holographic */
+        .keyboard-holo {
+            background: #000;
+            position: relative;
+        }
+        
+        .holo-surface {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, 
+                transparent 30%, 
+                rgba(255, 0, 255, 0.1) 35%, 
+                rgba(0, 255, 255, 0.1) 40%, 
+                transparent 45%, 
+                transparent 55%, 
+                rgba(255, 255, 0, 0.1) 60%, 
+                rgba(0, 255, 0, 0.1) 65%, 
+                transparent 70%);
+            background-size: 200% 200%;
+            animation: holoShift 4s linear infinite;
+        }
+        
+        .holo-button {
+            width: 110px;
+            height: 110px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            cursor: pointer;
+        }
+        
+        .holo-ring {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 3px solid;
+            border-image: linear-gradient(45deg, #00ffff, #ff00ff, #ffff00, #00ffff);
+            border-image-slice: 1;
+            border-radius: 50%;
+            animation: rotateRing 4s linear infinite;
+        }
+        
+        .holo-core {
+            position: absolute;
+            width: 70%;
+            height: 70%;
+            background: conic-gradient(from 0deg, #00ffff, #ff00ff, #ffff00, #00ffff);
+            border-radius: 50%;
+            top: 15%;
+            left: 15%;
+            opacity: 0.8;
+            animation: rotateCore 3s linear infinite reverse;
+        }
+        
+        /* Option 6: Cyberpunk Grid */
+        .keyboard-cyber {
+            background: #0a0a0f;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .cyber-grid {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 255, 255, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 255, 0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
+            animation: gridMove 10s linear infinite;
+        }
+        
+        .cyber-button {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #ff006e, #8338ec, #3a86ff);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(45deg);
+            cursor: pointer;
+            box-shadow: 0 0 50px rgba(131, 56, 236, 0.7);
+            transition: all 0.3s ease;
+        }
+        
+        .cyber-button::before {
+            content: '';
+            position: absolute;
+            inset: 3px;
+            background: #0a0a0f;
+            transform: rotate(0deg);
+        }
+        
+        .cyber-icon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-45deg);
+            z-index: 10;
+        }
+        
+        /* Text animation area */
+        .text-display {
+            margin-top: 15px;
+            padding: 10px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 10px;
+            min-height: 40px;
+            display: flex;
+            align-items: center;
+            color: white;
+            font-family: 'Courier New', monospace;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .text-wave {
+            display: inline-block;
+            animation: textWave 2s ease-in-out infinite;
+            animation-delay: calc(var(--i) * 0.1s);
+        }
+        
+        /* SVG Icons */
+        .mic-icon {
+            fill: white;
+        }
+        
+        /* Animations */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes waveGradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        @keyframes neonRotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.5); opacity: 0; }
+        }
+        
+        @keyframes morphing {
+            0%, 100% { border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; }
+            25% { border-radius: 70% 30% 50% 50% / 30% 30% 70% 70%; }
+            50% { border-radius: 30% 70% 40% 60% / 70% 40% 60% 30%; }
+            75% { border-radius: 60% 40% 30% 70% / 40% 70% 30% 60%; }
+        }
+        
+        @keyframes floatParticle {
+            0% {
+                transform: translateY(100px);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes holoShift {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 100% 100%; }
+        }
+        
+        @keyframes rotateRing {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @keyframes rotateCore {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(20px, 20px); }
+        }
+        
+        @keyframes textWave {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .select-button {
+            margin-top: 15px;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .select-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+        
+        .status-indicator {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            gap: 5px;
+        }
+        
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #4caf50;
+            animation: statusPulse 2s infinite;
+        }
+        
+        @keyframes statusPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+        
+        /* Dynamic text effects */
+        .typing-effect {
+            border-right: 2px solid white;
+            animation: blink 1s infinite;
+        }
+        
+        @keyframes blink {
+            0%, 50% { border-color: white; }
+            51%, 100% { border-color: transparent; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>VoxType Keyboard UI Designs</h1>
+        <p>Select your preferred keyboard interface</p>
+    </div>
+    
+    <div class="showcase-container">
+        <!-- Option 1: Glassmorphism Wave -->
+        <div class="keyboard-option">
+            <h2 class="option-title">Glassmorphism Wave</h2>
+            <p class="option-description">Elegant frosted glass effect with animated gradient waves</p>
+            <div class="keyboard-preview keyboard-glass">
+                <div class="glass-wave"></div>
+                <div class="status-indicator">
+                    <div class="status-dot"></div>
+                    <div class="status-dot" style="animation-delay: 0.5s"></div>
+                    <div class="status-dot" style="animation-delay: 1s"></div>
+                </div>
+                <div class="glass-button" onclick="animateText(this)">
+                    <svg viewBox="0 0 24 24" class="mic-icon">
+                        <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/>
+                        <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/>
+                    </svg>
+                </div>
+                <div class="text-display" id="text1"></div>
+            </div>
+            <button class="select-button" onclick="selectDesign('glassmorphism')">Select This Design</button>
+        </div>
+        
+        <!-- Option 2: Neon Pulse -->
+        <div class="keyboard-option">
+            <h2 class="option-title">Neon Pulse</h2>
+            <p class="option-description">Vibrant neon glow with pulsating energy effects</p>
+            <div class="keyboard-preview keyboard-neon">
+                <div class="status-indicator">
+                    <div class="status-dot" style="background: #00ffff"></div>
+                    <div class="status-dot" style="background: #ff00ff; animation-delay: 0.5s"></div>
+                    <div class="status-dot" style="background: #00ff00; animation-delay: 1s"></div>
+                </div>
+                <div class="neon-button" onclick="animateText(this)">
+                    <div class="neon-pulse"></div>
+                    <svg viewBox="0 0 24 24" class="neon-mic">
+                        <path fill="#00ffff" d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/>
+                        <path fill="#00ffff" d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/>
+                    </svg>
+                </div>
+                <div class="text-display" id="text2"></div>
+            </div>
+            <button class="select-button" onclick="selectDesign('neon')">Select This Design</button>
+        </div>
+        
+        <!-- Option 3: Liquid Morph -->
+        <div class="keyboard-option">
+            <h2 class="option-title">Liquid Morph</h2>
+            <p class="option-description">Fluid blob animation with organic morphing shapes</p>
+            <div class="keyboard-preview keyboard-liquid">
+                <div class="status-indicator">
+                    <div class="status-dot"></div>
+                    <div class="status-dot" style="animation-delay: 0.5s"></div>
+                    <div class="status-dot" style="animation-delay: 1s"></div>
+                </div>
+                <div class="liquid-blob">
+                    <div class="blob-shape" onclick="animateText(this)">
+                        <svg viewBox="0 0 24 24" class="mic-icon">
+                            <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/>
+                            <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/>
+                        </svg>
+                    </div>
+                </div>
+                <div class="text-display" id="text3"></div>
+            </div>
+            <button class="select-button" onclick="selectDesign('liquid')">Select This Design</button>
+        </div>
+        
+        <!-- Option 4: Particle Field -->
+        <div class="keyboard-option">
+            <h2 class="option-title">Particle Field</h2>
+            <p class="option-description">Floating particles with gradient energy core</p>
+            <div class="keyboard-preview keyboard-particle">
+                <div class="particle-container">
+                    <div class="particle"></div>
+                    <div class="particle"></div>
+                    <div class="particle"></div>
+                    <div class="particle"></div>
+                    <div class="particle"></div>
+                    <div class="particle"></div>
+                    <div class="particle"></div>
+                    <div class="particle"></div>
+                </div>
+                <div class="status-indicator">
+                    <div class="status-dot"></div>
+                    <div class="status-dot" style="animation-delay: 0.5s"></div>
+                    <div class="status-dot" style="animation-delay: 1s"></div>
+                </div>
+                <div class="particle-button" onclick="animateText(this)">
+                    <svg viewBox="0 0 24 24" class="mic-icon">
+                        <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/>
+                        <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/>
+                    </svg>
+                </div>
+                <div class="text-display" id="text4"></div>
+            </div>
+            <button class="select-button" onclick="selectDesign('particle')">Select This Design</button>
+        </div>
+        
+        <!-- Option 5: Holographic -->
+        <div class="keyboard-option">
+            <h2 class="option-title">Holographic Interface</h2>
+            <p class="option-description">Futuristic hologram with rotating light rings</p>
+            <div class="keyboard-preview keyboard-holo">
+                <div class="holo-surface"></div>
+                <div class="status-indicator">
+                    <div class="status-dot" style="background: #00ffff"></div>
+                    <div class="status-dot" style="background: #ff00ff; animation-delay: 0.5s"></div>
+                    <div class="status-dot" style="background: #ffff00; animation-delay: 1s"></div>
+                </div>
+                <div class="holo-button" onclick="animateText(this)">
+                    <div class="holo-ring"></div>
+                    <div class="holo-core"></div>
+                    <svg viewBox="0 0 24 24" class="mic-icon" style="position: absolute; top: 30%; left: 30%; width: 40%; height: 40%; z-index: 10;">
+                        <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/>
+                        <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/>
+                    </svg>
+                </div>
+                <div class="text-display" id="text5"></div>
+            </div>
+            <button class="select-button" onclick="selectDesign('holographic')">Select This Design</button>
+        </div>
+        
+        <!-- Option 6: Cyberpunk Grid -->
+        <div class="keyboard-option">
+            <h2 class="option-title">Cyberpunk Grid</h2>
+            <p class="option-description">Neon grid with geometric gradient core</p>
+            <div class="keyboard-preview keyboard-cyber">
+                <div class="cyber-grid"></div>
+                <div class="status-indicator">
+                    <div class="status-dot" style="background: #ff006e"></div>
+                    <div class="status-dot" style="background: #8338ec; animation-delay: 0.5s"></div>
+                    <div class="status-dot" style="background: #3a86ff; animation-delay: 1s"></div>
+                </div>
+                <div class="cyber-button" onclick="animateText(this)">
+                    <div class="cyber-icon">
+                        <svg viewBox="0 0 24 24" class="mic-icon" width="40" height="40">
+                            <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/>
+                            <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/>
+                        </svg>
+                    </div>
+                </div>
+                <div class="text-display" id="text6"></div>
+            </div>
+            <button class="select-button" onclick="selectDesign('cyberpunk')">Select This Design</button>
+        </div>
+    </div>
+    
+    <script>
+        // Sample texts for animation
+        const sampleTexts = [
+            "Hello, this is VoxType",
+            "Voice typing made beautiful",
+            "Speak naturally, type perfectly",
+            "Your voice, your words",
+            "Powered by AI technology",
+            "Seamless voice recognition"
+        ];
+        
+        let currentTextIndex = 0;
+        
+        function animateText(button) {
+            const keyboard = button.closest('.keyboard-preview');
+            const textDisplay = keyboard.querySelector('.text-display');
+            const text = sampleTexts[currentTextIndex % sampleTexts.length];
+            currentTextIndex++;
+            
+            // Clear existing text
+            textDisplay.innerHTML = '';
+            
+            // Add wave animation effect
+            const characters = text.split('');
+            characters.forEach((char, index) => {
+                const span = document.createElement('span');
+                span.className = 'text-wave';
+                span.style.setProperty('--i', index);
+                span.textContent = char;
+                textDisplay.appendChild(span);
+            });
+            
+            // Add typing cursor effect
+            const cursor = document.createElement('span');
+            cursor.className = 'typing-effect';
+            textDisplay.appendChild(cursor);
+            
+            // Pulse the button
+            button.style.transform = 'scale(1.2)';
+            setTimeout(() => {
+                const baseTransform = button.classList.contains('glass-button') || 
+                                     button.classList.contains('blob-shape') ? 
+                                     'translate(-50%, -50%)' : '';
+                button.style.transform = baseTransform + ' scale(1)';
+            }, 300);
+            
+            // Remove cursor after animation
+            setTimeout(() => {
+                cursor.remove();
+            }, 3000);
+        }
+        
+        function selectDesign(designName) {
+            alert(`Selected Design: ${designName}\n\nThis design will be implemented in your VoxType keyboard with:\n- Custom XML layouts\n- Vector drawables\n- Animated transitions\n- Dynamic color themes`);
+            
+            // Store selection
+            localStorage.setItem('voxtype_keyboard_design', designName);
+            
+            // Show implementation details
+            console.log(`Implementing ${designName} design...`);
+            console.log('Files to create:');
+            console.log('- keyboard_layout_' + designName + '.xml');
+            console.log('- drawable/' + designName + '_button.xml');
+            console.log('- animator/' + designName + '_pulse.xml');
+            console.log('- values/themes_' + designName + '.xml');
+        }
+        
+        // Auto-animate on load
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.querySelectorAll('.keyboard-option').forEach((option, index) => {
+                    setTimeout(() => {
+                        const button = option.querySelector('.glass-button, .neon-button, .blob-shape, .particle-button, .holo-button, .cyber-button');
+                        if (button) {
+                            animateText(button);
+                        }
+                    }, index * 1000);
+                });
+            }, 1000);
+        });
+        
+        // Interactive hover effects
+        document.querySelectorAll('.glass-button, .neon-button, .blob-shape, .particle-button, .holo-button, .cyber-button').forEach(button => {
+            button.addEventListener('mouseenter', function() {
+                this.style.filter = 'brightness(1.2)';
+            });
+            button.addEventListener('mouseleave', function() {
+                this.style.filter = 'brightness(1)';
+            });
+        });
+    </script>
+</body>
+</html>

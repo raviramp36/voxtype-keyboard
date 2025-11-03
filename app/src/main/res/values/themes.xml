@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Base application theme -->
-    <style name="Theme.VoxType" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Theme.VoxType" parent="Theme.Material3.Light.NoActionBar">
         <!-- Primary brand color -->
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryVariant">@color/primary_dark</item>
@@ -12,7 +12,13 @@
         <item name="colorOnSecondary">@color/white</item>
         <!-- Status bar color -->
         <item name="android:statusBarColor">@color/primary_dark</item>
-        <!-- Customize your theme here -->
+        <!-- Text colors -->
+        <item name="android:textColorPrimary">@color/text_primary</item>
+        <item name="android:textColorSecondary">@color/text_secondary</item>
+        <!-- Background colors -->
+        <item name="android:windowBackground">@color/white</item>
+        <item name="colorSurface">@color/white</item>
+        <item name="colorOnSurface">@color/text_primary</item>
     </style>
     
     <!-- Keyboard theme -->

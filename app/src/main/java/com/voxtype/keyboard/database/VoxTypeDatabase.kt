@@ -4,32 +4,139 @@ import android.content.Context
 import androidx.room.*
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.voxtype.keyboard.database.entities.*
+import com.voxtype.keyboard.database.dao.*
 import java.util.Date
 import java.util.concurrent.TimeUnit
 
 @Database(
     entities = [
+        // Original entities
         TranscriptionEntry::class,
         CorrectionEntry::class,
         DailyStats::class,
         WordFrequency::class,
-        UserDictionary::class
+        UserDictionary::class,
+        // New entities as per requirements
+        DictionaryWord::class,
+        Snippet::class,
+        UserStatistics::class,
+        SettingsPreference::class,
+        UserDictionaryEntry::class
     ],
-    version = 1,
+    version = 2,
     exportSchema = true
 )
 @TypeConverters(DateConverters::class)
 abstract class VoxTypeDatabase : RoomDatabase() {
     
+    // Original DAOs
     abstract fun transcriptionDao(): TranscriptionDao
     abstract fun correctionDao(): CorrectionDao
     abstract fun statsDao(): StatsDao
     abstract fun wordFrequencyDao(): WordFrequencyDao
     abstract fun userDictionaryDao(): UserDictionaryDao
     
+    // New DAOs as per requirements
+    abstract fun dictionaryWordDao(): DictionaryWordDao
+    abstract fun snippetDao(): SnippetDao
+    abstract fun userStatisticsDao(): UserStatisticsDao
+    abstract fun settingsPreferenceDao(): SettingsPreferenceDao
+    abstract fun userDictionaryEntryDao(): UserDictionaryEntryDao
+    
     companion object {
         @Volatile
         private var INSTANCE: VoxTypeDatabase? = null
+        
+        private val MIGRATION_1_2 = object : Migration(1, 2) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                // Create new tables for the required entities
+                database.execSQL("""
+                    CREATE TABLE IF NOT EXISTS dictionary_words (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                        word TEXT NOT NULL,
+                        language TEXT NOT NULL DEFAULT 'en',
+                        frequency INTEGER NOT NULL DEFAULT 1,
+                        createdDate INTEGER NOT NULL,
+                        lastUsed INTEGER NOT NULL
+                    )
+                """)
+                
+                database.execSQL("""
+                    CREATE UNIQUE INDEX IF NOT EXISTS index_dictionary_words_word ON dictionary_words(word)
+                """)
+                
+                database.execSQL("""
+                    CREATE INDEX IF NOT EXISTS index_dictionary_words_language ON dictionary_words(language)
+                """)
+                
+                database.execSQL("""
+                    CREATE INDEX IF NOT EXISTS index_dictionary_words_frequency ON dictionary_words(frequency)
+                """)
+                
+                database.execSQL("""
+                    CREATE TABLE IF NOT EXISTS snippets (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                        trigger TEXT NOT NULL,
+                        content TEXT NOT NULL,
+                        category TEXT NOT NULL DEFAULT 'General',
+                        usageCount INTEGER NOT NULL DEFAULT 0,
+                        createdDate INTEGER NOT NULL
+                    )
+                """)
+                
+                database.execSQL("""
+                    CREATE UNIQUE INDEX IF NOT EXISTS index_snippets_trigger ON snippets(trigger)
+                """)
+                
+                database.execSQL("""
+                    CREATE INDEX IF NOT EXISTS index_snippets_category ON snippets(category)
+                """)
+                
+                database.execSQL("""
+                    CREATE INDEX IF NOT EXISTS index_snippets_usageCount ON snippets(usageCount)
+                """)
+                
+                database.execSQL("""
+                    CREATE TABLE IF NOT EXISTS user_statistics (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                        date TEXT NOT NULL,
+                        wordsTyped INTEGER NOT NULL DEFAULT 0,
+                        wpm REAL NOT NULL DEFAULT 0.0,
+                        appsUsed TEXT NOT NULL DEFAULT '',
+                        languagesUsed TEXT NOT NULL DEFAULT ''
+                    )
+                """)
+                
+                database.execSQL("""
+                    CREATE UNIQUE INDEX IF NOT EXISTS index_user_statistics_date ON user_statistics(date)
+                """)
+                
+                database.execSQL("""
+                    CREATE TABLE IF NOT EXISTS settings_preferences (
+                        key TEXT PRIMARY KEY NOT NULL,
+                        value TEXT NOT NULL
+                    )
+                """)
+                
+                database.execSQL("""
+                    CREATE UNIQUE INDEX IF NOT EXISTS index_settings_preferences_key ON settings_preferences(key)
+                """)
+                
+                database.execSQL("""
+                    CREATE TABLE IF NOT EXISTS user_dictionary_entries (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                        word TEXT NOT NULL,
+                        replacement TEXT NOT NULL,
+                        createdDate INTEGER NOT NULL
+                    )
+                """)
+                
+                database.execSQL("""
+                    CREATE UNIQUE INDEX IF NOT EXISTS index_user_dictionary_entries_word ON user_dictionary_entries(word)
+                """)
+            }
+        }
         
         fun getInstance(context: Context): VoxTypeDatabase {
             return INSTANCE ?: synchronized(this) {
@@ -38,7 +145,7 @@ abstract class VoxTypeDatabase : RoomDatabase() {
                     VoxTypeDatabase::class.java,
                     "voxtype_database"
                 )
-                .fallbackToDestructiveMigration()
+                .addMigrations(MIGRATION_1_2)
                 .build()
                 INSTANCE = instance
                 instance

@@ -23,11 +23,12 @@ import java.util.Locale
 class WhisperKeyboardService : InputMethodService() {
     
     private lateinit var keyboardView: View
-    private lateinit var voiceButton: Button
+    private lateinit var voiceButton: View
     private lateinit var statusText: TextView
     private lateinit var progressBar: ProgressBar
     private lateinit var groqProcessor: GroqProcessor
     private lateinit var analyticsManager: AnalyticsManager
+    private lateinit var advancedSettings: AdvancedSettingsManager
     
     private var mediaRecorder: MediaRecorder? = null
     private var audioFile: File? = null
@@ -37,10 +38,19 @@ class WhisperKeyboardService : InputMethodService() {
     private val mainScope = CoroutineScope(Dispatchers.Main + Job())
     private val handler = Handler(Looper.getMainLooper())
     
+    // New feature states
+    private var isWhisperMode = false
+    private var selectedLanguage = "auto"
+    private var isPrivacyMode = false
+    
     override fun onCreate() {
         super.onCreate()
         groqProcessor = GroqProcessor(this)
         analyticsManager = AnalyticsManager(this)
+        advancedSettings = AdvancedSettingsManager(this)
+        
+        // Load feature settings
+        loadFeatureSettings()
         
         // Check if API key is configured
         val prefs = getSharedPreferences("voxtype_prefs", MODE_PRIVATE)
@@ -56,17 +66,18 @@ class WhisperKeyboardService : InputMethodService() {
         keyboardView = LayoutInflater.from(this).inflate(R.layout.keyboard_layout_simple, null)
         
         // Initialize UI components
-        voiceButton = keyboardView.findViewById(R.id.voice_button)
+        val voiceTouchArea = keyboardView.findViewById<View>(R.id.voice_touch_area)
+        voiceButton = keyboardView.findViewById(R.id.voice_button) // Hidden view for compatibility
         statusText = keyboardView.findViewById(R.id.status_text)
         progressBar = keyboardView.findViewById(R.id.progress_bar)
         
-        // Set up the big voice button
-        voiceButton.setOnClickListener {
+        // Set up the entire touch area for voice recording
+        voiceTouchArea.setOnClickListener {
             toggleRecording()
         }
         
-        // Long press for continuous recording
-        voiceButton.setOnLongClickListener {
+        // Long press for continuous recording on touch area
+        voiceTouchArea.setOnLongClickListener {
             startContinuousRecording()
             true
         }
@@ -81,6 +92,10 @@ class WhisperKeyboardService : InputMethodService() {
         super.onStartInputView(info, restarting)
         keyboardView?.visibility = View.VISIBLE
         updateUI(RecordingState.IDLE)
+        
+        // Update UI elements with current settings
+        updateLanguageButton()
+        updateWhisperModeUI()
     }
     
     override fun onFinishInputView(finishingInput: Boolean) {
@@ -98,30 +113,56 @@ class WhisperKeyboardService : InputMethodService() {
             startActivity(intent)
         }
         
-        keyboardView.findViewById<View>(R.id.stats_button)?.setOnClickListener {
-            val intent = android.content.Intent(this, StatsActivity::class.java).apply {
-                flags = android.content.Intent.FLAG_ACTIVITY_NEW_TASK
-            }
-            startActivity(intent)
-        }
-        
         keyboardView.findViewById<View>(R.id.language_button)?.setOnClickListener {
             switchToNextSubtype()
         }
         
-        keyboardView.findViewById<View>(R.id.keyboard_button)?.setOnClickListener {
-            val imm = getSystemService(INPUT_METHOD_SERVICE) as android.view.inputmethod.InputMethodManager
-            imm.showInputMethodPicker()
+        keyboardView.findViewById<View>(R.id.space_button)?.setOnClickListener {
+            // Insert space character
+            currentInputConnection?.commitText(" ", 1)
+            vibrate(25)
         }
         
         keyboardView.findViewById<View>(R.id.clear_button)?.setOnClickListener {
             currentInputConnection?.deleteSurroundingText(1000, 1000)
+        }
+        
+        // Add backspace button functionality
+        keyboardView.findViewById<View>(R.id.backspace_button)?.setOnClickListener {
+            handleBackspace()
+        }
+        
+        // Add whisper mode toggle on long press of voice button
+        voiceButton.setOnLongClickListener {
+            if (!isRecording) {
+                toggleWhisperMode()
+                true
+            } else {
+                false
+            }
         }
     }
     
     private fun switchToNextSubtype() {
         val imeManager = getSystemService(INPUT_METHOD_SERVICE) as android.view.inputmethod.InputMethodManager
         imeManager.switchToNextInputMethod(window.window?.attributes?.token, false)
+    }
+    
+    private fun handleBackspace() {
+        val inputConnection = currentInputConnection ?: return
+        
+        // Check if there's selected text
+        val selectedText = inputConnection.getSelectedText(0)
+        if (!selectedText.isNullOrEmpty()) {
+            // Delete selected text
+            inputConnection.commitText("", 1)
+        } else {
+            // Delete character before cursor
+            inputConnection.deleteSurroundingText(1, 0)
+        }
+        
+        // Vibrate for feedback
+        vibrate(25)
     }
     
     private fun toggleRecording() {
@@ -221,45 +262,54 @@ class WhisperKeyboardService : InputMethodService() {
                 // Get context for better transcription
                 val contextBefore = currentInputConnection?.getTextBeforeCursor(200, 0)?.toString() ?: ""
                 
-                // Detect language
-                val language = when (getCurrentLocale().language) {
-                    "hi" -> "hi"  // Hindi
-                    else -> "en"  // English (all variants)
-                }
+                // Get language preference or auto-detect
+                val language = getSelectedLanguage()
                 
-                // Transcribe with Whisper (already includes punctuation!)
+                // Transcribe with Whisper with enhanced settings
                 val transcribedText = groqProcessor.transcribeAudio(
                     audioFile = audioFile,
                     language = language,
-                    prompt = contextBefore  // Provide context for better accuracy
+                    prompt = contextBefore,  // Provide context for better accuracy
+                    isWhisperMode = isWhisperMode
                 )
                 
                 // Detect mode for potential enhancement
                 val mode = detectTextMode()
                 
+                // Apply smart formatting first
+                var enhancedText = groqProcessor.applySmartFormatting(transcribedText, contextBefore)
+                
                 // Optional: Further enhance with LLM if needed
                 val finalText = if (shouldEnhanceText(mode)) {
                     showStatus("Enhancing...")
-                    groqProcessor.processText(transcribedText, contextBefore, mode)
+                    groqProcessor.processText(
+                        rawText = enhancedText, 
+                        context = contextBefore, 
+                        mode = mode,
+                        language = language,
+                        isWhisperMode = isWhisperMode
+                    )
                 } else {
-                    // Whisper output is already good enough for most cases
-                    transcribedText
+                    // Smart formatting is already applied
+                    enhancedText
                 }
                 
                 // Insert the text
                 currentInputConnection?.commitText(finalText, 1)
                 lastTranscribedText = finalText
                 
-                // Track analytics
-                val duration = (System.currentTimeMillis() - recordingStartTime) / 1000f
-                val appPackage = currentInputEditorInfo?.packageName
-                analyticsManager.trackTranscription(
-                    rawText = transcribedText,
-                    finalText = finalText,
-                    duration = duration,
-                    appPackage = appPackage,
-                    mode = mode
-                )
+                // Track analytics (respecting privacy mode)
+                if (!isPrivacyMode) {
+                    val duration = (System.currentTimeMillis() - recordingStartTime) / 1000f
+                    val appPackage = currentInputEditorInfo?.packageName
+                    analyticsManager.trackTranscription(
+                        rawText = transcribedText,
+                        finalText = finalText,
+                        duration = duration,
+                        appPackage = appPackage,
+                        mode = mode
+                    )
+                }
                 
                 // Show word count in status
                 val wordCount = finalText.split("\\s+".toRegex()).filter { it.isNotEmpty() }.size
@@ -292,34 +342,27 @@ class WhisperKeyboardService : InputMethodService() {
         handler.post {
             when (state) {
                 RecordingState.IDLE -> {
-                    voiceButton.text = "🎤"
-                    voiceButton.setBackgroundResource(R.drawable.button_idle)
                     progressBar.visibility = View.GONE
+                    // Update touch area background for idle state
+                    keyboardView.findViewById<View>(R.id.voice_touch_area)?.setBackgroundResource(R.drawable.glass_background)
                 }
                 RecordingState.RECORDING -> {
-                    voiceButton.text = "🔴"
-                    voiceButton.setBackgroundResource(R.drawable.button_recording)
-                    progressBar.visibility = View.VISIBLE
+                    progressBar.visibility = View.GONE // Hide progress during recording for cleaner look
+                    // Update touch area background for recording state
+                    keyboardView.findViewById<View>(R.id.voice_touch_area)?.setBackgroundResource(R.drawable.glass_button_recording)
                 }
                 RecordingState.PROCESSING -> {
-                    voiceButton.text = "⏳"
-                    voiceButton.setBackgroundResource(R.drawable.button_processing)
-                    progressBar.visibility = View.VISIBLE
+                    progressBar.visibility = View.VISIBLE // Show progress only when processing
+                    // Update touch area background for processing state
+                    keyboardView.findViewById<View>(R.id.voice_touch_area)?.setBackgroundResource(R.drawable.glass_button_processing)
                 }
             }
         }
     }
     
     private fun showStatus(message: String) {
-        handler.post {
-            statusText.text = message
-            statusText.visibility = View.VISIBLE
-            
-            // Auto-hide status after 3 seconds
-            handler.postDelayed({
-                statusText.visibility = View.GONE
-            }, 3000)
-        }
+        // Status text is now hidden, so we don't update it
+        // Keep the method for compatibility but do nothing
     }
     
     private fun hasRecordPermission(): Boolean {
@@ -392,31 +435,164 @@ class WhisperKeyboardService : InputMethodService() {
         }
     }
     
+    private fun getSelectedLanguage(): String {
+        val prefs = getSharedPreferences("voxtype_prefs", MODE_PRIVATE)
+        selectedLanguage = prefs.getString("voice_language", "auto") ?: "auto"
+        return when (selectedLanguage) {
+            "auto" -> "auto"
+            "english" -> "en"
+            "hindi" -> "hi"
+            "mixed" -> "auto"  // Use auto-detection for mixed language
+            else -> "auto"
+        }
+    }
+    
+    private fun loadFeatureSettings() {
+        mainScope.launch {
+            try {
+                isWhisperMode = advancedSettings.isWhisperModeEnabled()
+                isPrivacyMode = advancedSettings.isPrivacyModeEnabled()
+                selectedLanguage = advancedSettings.getVoiceLanguage()
+                
+                // Initialize default settings if needed
+                advancedSettings.initializeDefaultSettings()
+            } catch (e: Exception) {
+                // Fallback to SharedPreferences if database isn't ready
+                val prefs = getSharedPreferences("voxtype_prefs", MODE_PRIVATE)
+                isWhisperMode = prefs.getBoolean("whisper_mode", false)
+                isPrivacyMode = prefs.getBoolean("privacy_mode", false)
+                selectedLanguage = prefs.getString("voice_language", "auto") ?: "auto"
+            }
+        }
+    }
+    
+    private fun toggleWhisperMode() {
+        isWhisperMode = !isWhisperMode
+        val prefs = getSharedPreferences("voxtype_prefs", MODE_PRIVATE)
+        prefs.edit().putBoolean("whisper_mode", isWhisperMode).apply()
+        
+        showStatus(if (isWhisperMode) "Whisper mode ON" else "Whisper mode OFF")
+        updateWhisperModeUI()
+    }
+    
+    private fun updateWhisperModeUI() {
+        // Update UI elements to show whisper mode state
+        handler.post {
+            val whisperIndicator = keyboardView.findViewById<View>(R.id.whisper_indicator)
+            whisperIndicator?.visibility = if (isWhisperMode) View.VISIBLE else View.GONE
+            
+            // Update voice button appearance for whisper mode
+            if (isWhisperMode) {
+                voiceButton.alpha = 0.7f  // Dimmed for whisper mode
+            } else {
+                voiceButton.alpha = 1.0f
+            }
+        }
+    }
+    
+    private fun cycleLanguage() {
+        val languages = listOf("auto", "english", "hindi", "mixed")
+        val currentIndex = languages.indexOf(selectedLanguage)
+        val nextIndex = (currentIndex + 1) % languages.size
+        selectedLanguage = languages[nextIndex]
+        
+        val prefs = getSharedPreferences("voxtype_prefs", MODE_PRIVATE)
+        prefs.edit().putString("voice_language", selectedLanguage).apply()
+        
+        val displayName = when (selectedLanguage) {
+            "auto" -> "Auto-detect"
+            "english" -> "English"
+            "hindi" -> "हिन्दी"
+            "mixed" -> "Mixed (En+Hi)"
+            else -> "Auto-detect"
+        }
+        
+        showStatus("Language: $displayName")
+        updateLanguageButton()
+    }
+    
+    private fun updateLanguageButton() {
+        handler.post {
+            val languageButton = keyboardView.findViewById<Button>(R.id.language_button)
+            val emoji = when (selectedLanguage) {
+                "english" -> "🇺🇸"
+                "hindi" -> "🇮🇳"
+                "mixed" -> "🌏"
+                else -> "🌐"
+            }
+            languageButton?.text = emoji
+        }
+    }
+    
     private fun detectTextMode(): GroqProcessor.TextMode {
         val editorInfo = currentInputEditorInfo
         val packageName = editorInfo?.packageName ?: ""
         val inputType = editorInfo?.inputType ?: 0
+        val className = editorInfo?.fieldName ?: ""
         
+        // Enhanced app detection patterns
         return when {
+            // Email applications
             packageName.contains("gmail") || 
             packageName.contains("mail") || 
-            packageName.contains("outlook") -> GroqProcessor.TextMode.EMAIL
+            packageName.contains("outlook") ||
+            packageName.contains("protonmail") ||
+            packageName.contains("yahoo") ||
+            packageName.contains("spark") -> GroqProcessor.TextMode.EMAIL
             
+            // Chat/Messaging applications
             packageName.contains("whatsapp") || 
             packageName.contains("telegram") || 
             packageName.contains("messages") ||
             packageName.contains("sms") ||
-            packageName.contains("chat") -> GroqProcessor.TextMode.CHAT
+            packageName.contains("chat") ||
+            packageName.contains("messenger") ||
+            packageName.contains("signal") ||
+            packageName.contains("discord") ||
+            packageName.contains("instagram") ||
+            packageName.contains("snapchat") ||
+            packageName.contains("viber") ||
+            packageName.contains("wechat") -> GroqProcessor.TextMode.CHAT
             
+            // Professional/Business applications
             packageName.contains("slack") || 
             packageName.contains("teams") || 
-            packageName.contains("linkedin") -> GroqProcessor.TextMode.FORMAL
+            packageName.contains("linkedin") ||
+            packageName.contains("zoom") ||
+            packageName.contains("notion") ||
+            packageName.contains("asana") ||
+            packageName.contains("trello") ||
+            packageName.contains("jira") -> GroqProcessor.TextMode.FORMAL
             
+            // Document/Note taking apps
+            packageName.contains("docs") ||
+            packageName.contains("notes") ||
+            packageName.contains("onenote") ||
+            packageName.contains("evernote") ||
+            packageName.contains("obsidian") ||
+            packageName.contains("bear") -> GroqProcessor.TextMode.FORMAL
+            
+            // Social media (casual)
+            packageName.contains("twitter") ||
+            packageName.contains("facebook") ||
+            packageName.contains("reddit") ||
+            packageName.contains("tiktok") ||
+            packageName.contains("youtube") -> GroqProcessor.TextMode.CHAT
+            
+            // Input type based detection
             inputType and android.text.InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS != 0 -> 
                 GroqProcessor.TextMode.EMAIL
             
             inputType and android.text.InputType.TYPE_TEXT_VARIATION_SHORT_MESSAGE != 0 -> 
                 GroqProcessor.TextMode.CHAT
+                
+            inputType and android.text.InputType.TYPE_TEXT_VARIATION_LONG_MESSAGE != 0 -> 
+                GroqProcessor.TextMode.FORMAL
+            
+            // Field name based detection
+            className.contains("email", true) -> GroqProcessor.TextMode.EMAIL
+            className.contains("message", true) || className.contains("chat", true) -> GroqProcessor.TextMode.CHAT
+            className.contains("subject", true) || className.contains("title", true) -> GroqProcessor.TextMode.FORMAL
             
             else -> GroqProcessor.TextMode.GENERAL
         }

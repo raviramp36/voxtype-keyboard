@@ -10,8 +10,28 @@
     <color name="button_success">#4CAF50</color>
     <color name="divider">#E0E0E0</color>
     <color name="help_text">#9E9E9E</color>
-    <color name="keyboard_background">#F5F5F5</color>
-    <color name="keyboard_background_dark">#212121</color>
+    <color name="keyboard_background">#121212</color>
+    <color name="keyboard_background_dark">#000000</color>
+    <color name="md_theme_background">#FAFAFA</color>
+    <color name="md_theme_error">#F44336</color>
+    <color name="md_theme_on_background">#212121</color>
+    <color name="md_theme_on_error">#FFFFFF</color>
+    <color name="md_theme_on_primary">#FFFFFF</color>
+    <color name="md_theme_on_primary_container">#0D47A1</color>
+    <color name="md_theme_on_secondary">#FFFFFF</color>
+    <color name="md_theme_on_secondary_container">#006064</color>
+    <color name="md_theme_on_surface">#212121</color>
+    <color name="md_theme_on_surface_variant">#757575</color>
+    <color name="md_theme_on_tertiary">#FFFFFF</color>
+    <color name="md_theme_outline">#9E9E9E</color>
+    <color name="md_theme_outline_variant">#E0E0E0</color>
+    <color name="md_theme_primary">#1E88E5</color>
+    <color name="md_theme_primary_container">#E3F2FD</color>
+    <color name="md_theme_secondary">#00ACC1</color>
+    <color name="md_theme_secondary_container">#E0F8FA</color>
+    <color name="md_theme_surface">#FFFFFF</color>
+    <color name="md_theme_surface_variant">#F5F5F5</color>
+    <color name="md_theme_tertiary">#4CAF50</color>
     <color name="primary">#1E88E5</color>
     <color name="primary_color">#1E88E5</color>
     <color name="primary_dark">#1565C0</color>
@@ -48,7 +68,7 @@
         <item name="android:keyBackground">@drawable/button_idle</item>
         <item name="android:keyTextColor">@color/text_primary</item>
     </style>
-    <style name="Theme.VoxType" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Theme.VoxType" parent="Theme.Material3.Light.NoActionBar">
         
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryVariant">@color/primary_dark</item>
@@ -60,5 +80,11 @@
         
         <item name="android:statusBarColor">@color/primary_dark</item>
         
+        <item name="android:textColorPrimary">@color/text_primary</item>
+        <item name="android:textColorSecondary">@color/text_secondary</item>
+        
+        <item name="android:windowBackground">@color/white</item>
+        <item name="colorSurface">@color/white</item>
+        <item name="colorOnSurface">@color/text_primary</item>
     </style>
 </resources>

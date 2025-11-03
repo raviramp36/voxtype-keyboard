@@ -1,94 +1,250 @@
 [
     {
-        "merged": "com.voxtype.keyboard.app-merged_res-38:/layout_item_correction.xml.flat",
-        "source": "com.voxtype.keyboard.app-main-40:/layout/item_correction.xml"
+        "merged": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-merged_res-51:/drawable_ic_copy.xml.flat",
+        "source": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-main-53:/drawable/ic_copy.xml"
     },
     {
-        "merged": "com.voxtype.keyboard.app-merged_res-38:/drawable_ic_language.xml.flat",
-        "source": "com.voxtype.keyboard.app-main-40:/drawable/ic_language.xml"
+        "merged": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-merged_res-51:/drawable_button_processing.xml.flat",
+        "source": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-main-53:/drawable/button_processing.xml"
     },
     {
-        "merged": "com.voxtype.keyboard.app-merged_res-38:/drawable_button_idle.xml.flat",
-        "source": "com.voxtype.keyboard.app-main-40:/drawable/button_idle.xml"
+        "merged": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-merged_res-51:/xml_data_extraction_rules.xml.flat",
+        "source": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-main-53:/xml/data_extraction_rules.xml"
     },
     {
-        "merged": "com.voxtype.keyboard.app-merged_res-38:/layout_keyboard_layout_simple.xml.flat",
-        "source": "com.voxtype.keyboard.app-main-40:/layout/keyboard_layout_simple.xml"
+        "merged": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-merged_res-51:/drawable_glass_button_processing.xml.flat",
+        "source": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-main-53:/drawable/glass_button_processing.xml"
     },
     {
-        "merged": "com.voxtype.keyboard.app-merged_res-38:/layout_activity_main.xml.flat",
-        "source": "com.voxtype.keyboard.app-main-40:/layout/activity_main.xml"
+        "merged": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-merged_res-51:/drawable_ic_settings.xml.flat",
+        "source": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-main-53:/drawable/ic_settings.xml"
     },
     {
-        "merged": "com.voxtype.keyboard.app-merged_res-38:/drawable_ic_mic.xml.flat",
-        "source": "com.voxtype.keyboard.app-main-40:/drawable/ic_mic.xml"
+        "merged": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-merged_res-51:/layout_activity_main.xml.flat",
+        "source": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-main-53:/layout/activity_main.xml"
     },
     {
-        "merged": "com.voxtype.keyboard.app-merged_res-38:/drawable_ic_processing.xml.flat",
-        "source": "com.voxtype.keyboard.app-main-40:/drawable/ic_processing.xml"
+        "merged": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-merged_res-51:/drawable_ic_processing.xml.flat",
+        "source": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-main-53:/drawable/ic_processing.xml"
     },
     {
-        "merged": "com.voxtype.keyboard.app-merged_res-38:/drawable_button_listening.xml.flat",
-        "source": "com.voxtype.keyboard.app-main-40:/drawable/button_listening.xml"
+        "merged": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-merged_res-51:/layout_item_snippet.xml.flat",
+        "source": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-main-53:/layout/item_snippet.xml"
     },
     {
-        "merged": "com.voxtype.keyboard.app-merged_res-38:/drawable_ic_mic_active.xml.flat",
-        "source": "com.voxtype.keyboard.app-main-40:/drawable/ic_mic_active.xml"
+        "merged": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-merged_res-51:/layout_activity_stats.xml.flat",
+        "source": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-main-53:/layout/activity_stats.xml"
     },
     {
-        "merged": "com.voxtype.keyboard.app-merged_res-38:/layout_activity_stats.xml.flat",
-        "source": "com.voxtype.keyboard.app-main-40:/layout/activity_stats.xml"
+        "merged": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-merged_res-51:/drawable_wave_gradient.xml.flat",
+        "source": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-main-53:/drawable/wave_gradient.xml"
     },
     {
-        "merged": "com.voxtype.keyboard.app-merged_res-38:/drawable_gradient_background.xml.flat",
-        "source": "com.voxtype.keyboard.app-main-40:/drawable/gradient_background.xml"
+        "merged": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-merged_res-51:/drawable_button_recording.xml.flat",
+        "source": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-main-53:/drawable/button_recording.xml"
     },
     {
-        "merged": "com.voxtype.keyboard.app-merged_res-38:/layout_keyboard_layout.xml.flat",
-        "source": "com.voxtype.keyboard.app-main-40:/layout/keyboard_layout.xml"
+        "merged": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-merged_res-51:/layout_item_correction.xml.flat",
+        "source": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-main-53:/layout/item_correction.xml"
     },
     {
-        "merged": "com.voxtype.keyboard.app-merged_res-38:/drawable_ic_settings.xml.flat",
-        "source": "com.voxtype.keyboard.app-main-40:/drawable/ic_settings.xml"
+        "merged": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-merged_res-51:/drawable_glass_background.xml.flat",
+        "source": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-main-53:/drawable/glass_background.xml"
     },
     {
-        "merged": "com.voxtype.keyboard.app-merged_res-38:/drawable_ic_keyboard.xml.flat",
-        "source": "com.voxtype.keyboard.app-main-40:/drawable/ic_keyboard.xml"
+        "merged": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-merged_res-51:/layout_item_recent_word.xml.flat",
+        "source": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-main-53:/layout/item_recent_word.xml"
     },
     {
-        "merged": "com.voxtype.keyboard.app-merged_res-38:/drawable_summary_background.xml.flat",
-        "source": "com.voxtype.keyboard.app-main-40:/drawable/summary_background.xml"
+        "merged": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-merged_res-51:/drawable_glass_button_recording.xml.flat",
+        "source": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-main-53:/drawable/glass_button_recording.xml"
     },
     {
-        "merged": "com.voxtype.keyboard.app-merged_res-38:/drawable_word_item_background.xml.flat",
-        "source": "com.voxtype.keyboard.app-main-40:/drawable/word_item_background.xml"
+        "merged": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-merged_res-51:/drawable_ic_home.xml.flat",
+        "source": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-main-53:/drawable/ic_home.xml"
     },
     {
-        "merged": "com.voxtype.keyboard.app-merged_res-38:/drawable_button_recording.xml.flat",
-        "source": "com.voxtype.keyboard.app-main-40:/drawable/button_recording.xml"
+        "merged": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-merged_res-51:/layout_keyboard_layout_simple.xml.flat",
+        "source": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-main-53:/layout/keyboard_layout_simple.xml"
     },
     {
-        "merged": "com.voxtype.keyboard.app-merged_res-38:/xml_data_extraction_rules.xml.flat",
-        "source": "com.voxtype.keyboard.app-main-40:/xml/data_extraction_rules.xml"
+        "merged": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-merged_res-51:/navigation_nav_graph.xml.flat",
+        "source": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-main-53:/navigation/nav_graph.xml"
     },
     {
-        "merged": "com.voxtype.keyboard.app-merged_res-38:/xml_backup_rules.xml.flat",
-        "source": "com.voxtype.keyboard.app-main-40:/xml/backup_rules.xml"
+        "merged": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-merged_res-51:/drawable_button_idle.xml.flat",
+        "source": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-main-53:/drawable/button_idle.xml"
     },
     {
-        "merged": "com.voxtype.keyboard.app-merged_res-38:/xml_method.xml.flat",
-        "source": "com.voxtype.keyboard.app-main-40:/xml/method.xml"
+        "merged": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-merged_res-51:/drawable_ic_keyboard.xml.flat",
+        "source": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-main-53:/drawable/ic_keyboard.xml"
     },
     {
-        "merged": "com.voxtype.keyboard.app-merged_res-38:/drawable_button_processing.xml.flat",
-        "source": "com.voxtype.keyboard.app-main-40:/drawable/button_processing.xml"
+        "merged": "com.voxtype.keyboard.app-merged_res-51:/layout_keyboard_layout_simple.xml.flat",
+        "source": "com.voxtype.keyboard.app-main-53:/layout/keyboard_layout_simple.xml"
     },
     {
-        "merged": "com.voxtype.keyboard.app-merged_res-38:/drawable_ic_clear.xml.flat",
-        "source": "com.voxtype.keyboard.app-main-40:/drawable/ic_clear.xml"
+        "merged": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-merged_res-51:/layout_fragment_home.xml.flat",
+        "source": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-main-53:/layout/fragment_home.xml"
     },
     {
-        "merged": "com.voxtype.keyboard.app-merged_res-38:/layout_item_word.xml.flat",
-        "source": "com.voxtype.keyboard.app-main-40:/layout/item_word.xml"
+        "merged": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-merged_res-51:/layout_dialog_add_word.xml.flat",
+        "source": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-main-53:/layout/dialog_add_word.xml"
+    },
+    {
+        "merged": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-merged_res-51:/drawable_ic_delete.xml.flat",
+        "source": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-main-53:/drawable/ic_delete.xml"
+    },
+    {
+        "merged": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-merged_res-51:/layout_item_dictionary_word.xml.flat",
+        "source": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-main-53:/layout/item_dictionary_word.xml"
+    },
+    {
+        "merged": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-merged_res-51:/drawable_glass_button_listening.xml.flat",
+        "source": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-main-53:/drawable/glass_button_listening.xml"
+    },
+    {
+        "merged": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-merged_res-51:/drawable_ic_language.xml.flat",
+        "source": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-main-53:/drawable/ic_language.xml"
+    },
+    {
+        "merged": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-merged_res-51:/layout_item_transcription_history.xml.flat",
+        "source": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-main-53:/layout/item_transcription_history.xml"
+    },
+    {
+        "merged": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-merged_res-51:/drawable_ic_mic.xml.flat",
+        "source": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-main-53:/drawable/ic_mic.xml"
+    },
+    {
+        "merged": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-merged_res-51:/drawable_ic_clear.xml.flat",
+        "source": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-main-53:/drawable/ic_clear.xml"
+    },
+    {
+        "merged": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-merged_res-51:/drawable_word_item_background.xml.flat",
+        "source": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-main-53:/drawable/word_item_background.xml"
+    },
+    {
+        "merged": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-merged_res-51:/drawable_glass_button_idle.xml.flat",
+        "source": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-main-53:/drawable/glass_button_idle.xml"
+    },
+    {
+        "merged": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-merged_res-51:/drawable_ic_today.xml.flat",
+        "source": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-main-53:/drawable/ic_today.xml"
+    },
+    {
+        "merged": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-merged_res-51:/color_bottom_nav_color_selector.xml.flat",
+        "source": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-main-53:/color/bottom_nav_color_selector.xml"
+    },
+    {
+        "merged": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-merged_res-51:/layout_item_word.xml.flat",
+        "source": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-main-53:/layout/item_word.xml"
+    },
+    {
+        "merged": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-merged_res-51:/xml_method.xml.flat",
+        "source": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-main-53:/xml/method.xml"
+    },
+    {
+        "merged": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-merged_res-51:/menu_bottom_navigation_menu.xml.flat",
+        "source": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-main-53:/menu/bottom_navigation_menu.xml"
+    },
+    {
+        "merged": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-merged_res-51:/drawable_wave_animation.xml.flat",
+        "source": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-main-53:/drawable/wave_animation.xml"
+    },
+    {
+        "merged": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-merged_res-51:/drawable_ic_backspace.xml.flat",
+        "source": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-main-53:/drawable/ic_backspace.xml"
+    },
+    {
+        "merged": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-merged_res-51:/layout_dialog_add_snippet.xml.flat",
+        "source": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-main-53:/layout/dialog_add_snippet.xml"
+    },
+    {
+        "merged": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-merged_res-51:/layout_item_stats_card.xml.flat",
+        "source": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-main-53:/layout/item_stats_card.xml"
+    },
+    {
+        "merged": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-merged_res-51:/layout_fragment_snippets.xml.flat",
+        "source": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-main-53:/layout/fragment_snippets.xml"
+    },
+    {
+        "merged": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-merged_res-51:/drawable_ic_week.xml.flat",
+        "source": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-main-53:/drawable/ic_week.xml"
+    },
+    {
+        "merged": "com.voxtype.keyboard.app-merged_res-51:/drawable_glass_button_small.xml.flat",
+        "source": "com.voxtype.keyboard.app-main-53:/drawable/glass_button_small.xml"
+    },
+    {
+        "merged": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-merged_res-51:/drawable_streak_background.xml.flat",
+        "source": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-main-53:/drawable/streak_background.xml"
+    },
+    {
+        "merged": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-merged_res-51:/layout_fragment_dictionary.xml.flat",
+        "source": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-main-53:/layout/fragment_dictionary.xml"
+    },
+    {
+        "merged": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-merged_res-51:/drawable_ic_add.xml.flat",
+        "source": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-main-53:/drawable/ic_add.xml"
+    },
+    {
+        "merged": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-merged_res-51:/drawable_summary_background.xml.flat",
+        "source": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-main-53:/drawable/summary_background.xml"
+    },
+    {
+        "merged": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-merged_res-51:/drawable_frequency_badge_background.xml.flat",
+        "source": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-main-53:/drawable/frequency_badge_background.xml"
+    },
+    {
+        "merged": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-merged_res-51:/drawable_glass_button_small.xml.flat",
+        "source": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-main-53:/drawable/glass_button_small.xml"
+    },
+    {
+        "merged": "com.voxtype.keyboard.app-merged_res-51:/drawable_glass_background.xml.flat",
+        "source": "com.voxtype.keyboard.app-main-53:/drawable/glass_background.xml"
+    },
+    {
+        "merged": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-merged_res-51:/drawable_gradient_background.xml.flat",
+        "source": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-main-53:/drawable/gradient_background.xml"
+    },
+    {
+        "merged": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-merged_res-51:/layout_fragment_settings.xml.flat",
+        "source": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-main-53:/layout/fragment_settings.xml"
+    },
+    {
+        "merged": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-merged_res-51:/drawable_ic_dictionary.xml.flat",
+        "source": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-main-53:/drawable/ic_dictionary.xml"
+    },
+    {
+        "merged": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-merged_res-51:/drawable_button_listening.xml.flat",
+        "source": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-main-53:/drawable/button_listening.xml"
+    },
+    {
+        "merged": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-merged_res-51:/xml_backup_rules.xml.flat",
+        "source": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-main-53:/xml/backup_rules.xml"
+    },
+    {
+        "merged": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-merged_res-51:/drawable_ic_app.xml.flat",
+        "source": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-main-53:/drawable/ic_app.xml"
+    },
+    {
+        "merged": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-merged_res-51:/layout_keyboard_layout.xml.flat",
+        "source": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-main-53:/layout/keyboard_layout.xml"
+    },
+    {
+        "merged": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-merged_res-51:/drawable_ic_snippets.xml.flat",
+        "source": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-main-53:/drawable/ic_snippets.xml"
+    },
+    {
+        "merged": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-merged_res-51:/drawable_ic_mic_active.xml.flat",
+        "source": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-main-53:/drawable/ic_mic_active.xml"
+    },
+    {
+        "merged": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-merged_res-51:/drawable_ic_edit.xml.flat",
+        "source": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-main-53:/drawable/ic_edit.xml"
+    },
+    {
+        "merged": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-merged_res-51:/drawable_ic_search.xml.flat",
+        "source": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-main-53:/drawable/ic_search.xml"
     }
 ]

@@ -1,12 +1,14 @@
 package com.voxtype.keyboard.database;
 
-@kotlin.Metadata(mv = {1, 9, 0}, k = 1, xi = 48, d1 = {"\u0000,\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0002\b\u0002\b\'\u0018\u0000 \r2\u00020\u0001:\u0001\rB\u0005\u00a2\u0006\u0002\u0010\u0002J\b\u0010\u0003\u001a\u00020\u0004H&J\b\u0010\u0005\u001a\u00020\u0006H&J\b\u0010\u0007\u001a\u00020\bH&J\b\u0010\t\u001a\u00020\nH&J\b\u0010\u000b\u001a\u00020\fH&\u00a8\u0006\u000e"}, d2 = {"Lcom/voxtype/keyboard/database/VoxTypeDatabase;", "Landroidx/room/RoomDatabase;", "()V", "correctionDao", "Lcom/voxtype/keyboard/database/CorrectionDao;", "statsDao", "Lcom/voxtype/keyboard/database/StatsDao;", "transcriptionDao", "Lcom/voxtype/keyboard/database/TranscriptionDao;", "userDictionaryDao", "Lcom/voxtype/keyboard/database/UserDictionaryDao;", "wordFrequencyDao", "Lcom/voxtype/keyboard/database/WordFrequencyDao;", "Companion", "app_debug"})
-@androidx.room.Database(entities = {com.voxtype.keyboard.database.TranscriptionEntry.class, com.voxtype.keyboard.database.CorrectionEntry.class, com.voxtype.keyboard.database.DailyStats.class, com.voxtype.keyboard.database.WordFrequency.class, com.voxtype.keyboard.database.UserDictionary.class}, version = 1, exportSchema = true)
+@kotlin.Metadata(mv = {1, 9, 0}, k = 1, xi = 48, d1 = {"\u0000J\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0002\b\u0002\b\'\u0018\u0000 \u00172\u00020\u0001:\u0001\u0017B\u0005\u00a2\u0006\u0002\u0010\u0002J\b\u0010\u0003\u001a\u00020\u0004H&J\b\u0010\u0005\u001a\u00020\u0006H&J\b\u0010\u0007\u001a\u00020\bH&J\b\u0010\t\u001a\u00020\nH&J\b\u0010\u000b\u001a\u00020\fH&J\b\u0010\r\u001a\u00020\u000eH&J\b\u0010\u000f\u001a\u00020\u0010H&J\b\u0010\u0011\u001a\u00020\u0012H&J\b\u0010\u0013\u001a\u00020\u0014H&J\b\u0010\u0015\u001a\u00020\u0016H&\u00a8\u0006\u0018"}, d2 = {"Lcom/voxtype/keyboard/database/VoxTypeDatabase;", "Landroidx/room/RoomDatabase;", "()V", "correctionDao", "Lcom/voxtype/keyboard/database/CorrectionDao;", "dictionaryWordDao", "Lcom/voxtype/keyboard/database/dao/DictionaryWordDao;", "settingsPreferenceDao", "Lcom/voxtype/keyboard/database/dao/SettingsPreferenceDao;", "snippetDao", "Lcom/voxtype/keyboard/database/dao/SnippetDao;", "statsDao", "Lcom/voxtype/keyboard/database/StatsDao;", "transcriptionDao", "Lcom/voxtype/keyboard/database/TranscriptionDao;", "userDictionaryDao", "Lcom/voxtype/keyboard/database/UserDictionaryDao;", "userDictionaryEntryDao", "Lcom/voxtype/keyboard/database/dao/UserDictionaryEntryDao;", "userStatisticsDao", "Lcom/voxtype/keyboard/database/dao/UserStatisticsDao;", "wordFrequencyDao", "Lcom/voxtype/keyboard/database/WordFrequencyDao;", "Companion", "app_debug"})
+@androidx.room.Database(entities = {com.voxtype.keyboard.database.TranscriptionEntry.class, com.voxtype.keyboard.database.CorrectionEntry.class, com.voxtype.keyboard.database.DailyStats.class, com.voxtype.keyboard.database.WordFrequency.class, com.voxtype.keyboard.database.UserDictionary.class, com.voxtype.keyboard.database.entities.DictionaryWord.class, com.voxtype.keyboard.database.entities.Snippet.class, com.voxtype.keyboard.database.entities.UserStatistics.class, com.voxtype.keyboard.database.entities.SettingsPreference.class, com.voxtype.keyboard.database.entities.UserDictionaryEntry.class}, version = 2, exportSchema = true)
 @androidx.room.TypeConverters(value = {com.voxtype.keyboard.database.DateConverters.class})
 public abstract class VoxTypeDatabase extends androidx.room.RoomDatabase {
     @kotlin.jvm.Volatile
     @org.jetbrains.annotations.Nullable
     private static volatile com.voxtype.keyboard.database.VoxTypeDatabase INSTANCE;
+    @org.jetbrains.annotations.NotNull
+    private static final androidx.room.migration.Migration MIGRATION_1_2 = null;
     @org.jetbrains.annotations.NotNull
     public static final com.voxtype.keyboard.database.VoxTypeDatabase.Companion Companion = null;
     
@@ -29,7 +31,22 @@ public abstract class VoxTypeDatabase extends androidx.room.RoomDatabase {
     @org.jetbrains.annotations.NotNull
     public abstract com.voxtype.keyboard.database.UserDictionaryDao userDictionaryDao();
     
-    @kotlin.Metadata(mv = {1, 9, 0}, k = 1, xi = 48, d1 = {"\u0000\u001a\n\u0002\u0018\u0002\n\u0002\u0010\u0000\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0000\b\u0086\u0003\u0018\u00002\u00020\u0001B\u0007\b\u0002\u00a2\u0006\u0002\u0010\u0002J\u000e\u0010\u0005\u001a\u00020\u00042\u0006\u0010\u0006\u001a\u00020\u0007R\u0010\u0010\u0003\u001a\u0004\u0018\u00010\u0004X\u0082\u000e\u00a2\u0006\u0002\n\u0000\u00a8\u0006\b"}, d2 = {"Lcom/voxtype/keyboard/database/VoxTypeDatabase$Companion;", "", "()V", "INSTANCE", "Lcom/voxtype/keyboard/database/VoxTypeDatabase;", "getInstance", "context", "Landroid/content/Context;", "app_debug"})
+    @org.jetbrains.annotations.NotNull
+    public abstract com.voxtype.keyboard.database.dao.DictionaryWordDao dictionaryWordDao();
+    
+    @org.jetbrains.annotations.NotNull
+    public abstract com.voxtype.keyboard.database.dao.SnippetDao snippetDao();
+    
+    @org.jetbrains.annotations.NotNull
+    public abstract com.voxtype.keyboard.database.dao.UserStatisticsDao userStatisticsDao();
+    
+    @org.jetbrains.annotations.NotNull
+    public abstract com.voxtype.keyboard.database.dao.SettingsPreferenceDao settingsPreferenceDao();
+    
+    @org.jetbrains.annotations.NotNull
+    public abstract com.voxtype.keyboard.database.dao.UserDictionaryEntryDao userDictionaryEntryDao();
+    
+    @kotlin.Metadata(mv = {1, 9, 0}, k = 1, xi = 48, d1 = {"\u0000 \n\u0002\u0018\u0002\n\u0002\u0010\u0000\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0000\b\u0086\u0003\u0018\u00002\u00020\u0001B\u0007\b\u0002\u00a2\u0006\u0002\u0010\u0002J\u000e\u0010\u0007\u001a\u00020\u00042\u0006\u0010\b\u001a\u00020\tR\u0010\u0010\u0003\u001a\u0004\u0018\u00010\u0004X\u0082\u000e\u00a2\u0006\u0002\n\u0000R\u000e\u0010\u0005\u001a\u00020\u0006X\u0082\u0004\u00a2\u0006\u0002\n\u0000\u00a8\u0006\n"}, d2 = {"Lcom/voxtype/keyboard/database/VoxTypeDatabase$Companion;", "", "()V", "INSTANCE", "Lcom/voxtype/keyboard/database/VoxTypeDatabase;", "MIGRATION_1_2", "Landroidx/room/migration/Migration;", "getInstance", "context", "Landroid/content/Context;", "app_debug"})
     public static final class Companion {
         
         private Companion() {

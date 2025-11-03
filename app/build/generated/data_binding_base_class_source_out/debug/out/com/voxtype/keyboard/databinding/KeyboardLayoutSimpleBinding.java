@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -22,13 +23,19 @@ public final class KeyboardLayoutSimpleBinding implements ViewBinding {
   private final LinearLayout rootView;
 
   @NonNull
+  public final Button backspaceButton;
+
+  @NonNull
   public final Button clearButton;
 
   @NonNull
-  public final Button keyboardButton;
+  public final Button languageButton;
 
   @NonNull
-  public final Button languageButton;
+  public final TextView languageIndicator;
+
+  @NonNull
+  public final TextView privacyIndicator;
 
   @NonNull
   public final ProgressBar progressBar;
@@ -40,29 +47,41 @@ public final class KeyboardLayoutSimpleBinding implements ViewBinding {
   public final Button settingsButton;
 
   @NonNull
-  public final Button statsButton;
+  public final Button spaceButton;
 
   @NonNull
   public final TextView statusText;
 
   @NonNull
-  public final Button voiceButton;
+  public final View voiceButton;
 
-  private KeyboardLayoutSimpleBinding(@NonNull LinearLayout rootView, @NonNull Button clearButton,
-      @NonNull Button keyboardButton, @NonNull Button languageButton,
+  @NonNull
+  public final FrameLayout voiceTouchArea;
+
+  @NonNull
+  public final TextView whisperIndicator;
+
+  private KeyboardLayoutSimpleBinding(@NonNull LinearLayout rootView,
+      @NonNull Button backspaceButton, @NonNull Button clearButton, @NonNull Button languageButton,
+      @NonNull TextView languageIndicator, @NonNull TextView privacyIndicator,
       @NonNull ProgressBar progressBar, @NonNull LinearLayout quickActions,
-      @NonNull Button settingsButton, @NonNull Button statsButton, @NonNull TextView statusText,
-      @NonNull Button voiceButton) {
+      @NonNull Button settingsButton, @NonNull Button spaceButton, @NonNull TextView statusText,
+      @NonNull View voiceButton, @NonNull FrameLayout voiceTouchArea,
+      @NonNull TextView whisperIndicator) {
     this.rootView = rootView;
+    this.backspaceButton = backspaceButton;
     this.clearButton = clearButton;
-    this.keyboardButton = keyboardButton;
     this.languageButton = languageButton;
+    this.languageIndicator = languageIndicator;
+    this.privacyIndicator = privacyIndicator;
     this.progressBar = progressBar;
     this.quickActions = quickActions;
     this.settingsButton = settingsButton;
-    this.statsButton = statsButton;
+    this.spaceButton = spaceButton;
     this.statusText = statusText;
     this.voiceButton = voiceButton;
+    this.voiceTouchArea = voiceTouchArea;
+    this.whisperIndicator = whisperIndicator;
   }
 
   @Override
@@ -92,21 +111,33 @@ public final class KeyboardLayoutSimpleBinding implements ViewBinding {
     // This is done to optimize the compiled bytecode for size and performance.
     int id;
     missingId: {
+      id = R.id.backspace_button;
+      Button backspaceButton = ViewBindings.findChildViewById(rootView, id);
+      if (backspaceButton == null) {
+        break missingId;
+      }
+
       id = R.id.clear_button;
       Button clearButton = ViewBindings.findChildViewById(rootView, id);
       if (clearButton == null) {
         break missingId;
       }
 
-      id = R.id.keyboard_button;
-      Button keyboardButton = ViewBindings.findChildViewById(rootView, id);
-      if (keyboardButton == null) {
-        break missingId;
-      }
-
       id = R.id.language_button;
       Button languageButton = ViewBindings.findChildViewById(rootView, id);
       if (languageButton == null) {
+        break missingId;
+      }
+
+      id = R.id.language_indicator;
+      TextView languageIndicator = ViewBindings.findChildViewById(rootView, id);
+      if (languageIndicator == null) {
+        break missingId;
+      }
+
+      id = R.id.privacy_indicator;
+      TextView privacyIndicator = ViewBindings.findChildViewById(rootView, id);
+      if (privacyIndicator == null) {
         break missingId;
       }
 
@@ -128,9 +159,9 @@ public final class KeyboardLayoutSimpleBinding implements ViewBinding {
         break missingId;
       }
 
-      id = R.id.stats_button;
-      Button statsButton = ViewBindings.findChildViewById(rootView, id);
-      if (statsButton == null) {
+      id = R.id.space_button;
+      Button spaceButton = ViewBindings.findChildViewById(rootView, id);
+      if (spaceButton == null) {
         break missingId;
       }
 
@@ -141,14 +172,26 @@ public final class KeyboardLayoutSimpleBinding implements ViewBinding {
       }
 
       id = R.id.voice_button;
-      Button voiceButton = ViewBindings.findChildViewById(rootView, id);
+      View voiceButton = ViewBindings.findChildViewById(rootView, id);
       if (voiceButton == null) {
         break missingId;
       }
 
-      return new KeyboardLayoutSimpleBinding((LinearLayout) rootView, clearButton, keyboardButton,
-          languageButton, progressBar, quickActions, settingsButton, statsButton, statusText,
-          voiceButton);
+      id = R.id.voice_touch_area;
+      FrameLayout voiceTouchArea = ViewBindings.findChildViewById(rootView, id);
+      if (voiceTouchArea == null) {
+        break missingId;
+      }
+
+      id = R.id.whisper_indicator;
+      TextView whisperIndicator = ViewBindings.findChildViewById(rootView, id);
+      if (whisperIndicator == null) {
+        break missingId;
+      }
+
+      return new KeyboardLayoutSimpleBinding((LinearLayout) rootView, backspaceButton, clearButton,
+          languageButton, languageIndicator, privacyIndicator, progressBar, quickActions,
+          settingsButton, spaceButton, statusText, voiceButton, voiceTouchArea, whisperIndicator);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

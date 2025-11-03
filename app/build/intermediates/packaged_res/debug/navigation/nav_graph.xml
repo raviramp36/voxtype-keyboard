@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.voxtype.keyboard.fragments.HomeFragment"
+        android:label="Home"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/dictionaryFragment"
+        android:name="com.voxtype.keyboard.fragments.DictionaryFragment"
+        android:label="Dictionary"
+        tools:layout="@layout/fragment_dictionary" />
+
+    <fragment
+        android:id="@+id/snippetsFragment"
+        android:name="com.voxtype.keyboard.fragments.SnippetsFragment"
+        android:label="Snippets"
+        tools:layout="@layout/fragment_snippets" />
+
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.voxtype.keyboard.fragments.SettingsFragment"
+        android:label="Settings"
+        tools:layout="@layout/fragment_settings" />
+
+</navigation>

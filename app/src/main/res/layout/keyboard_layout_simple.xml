@@ -3,109 +3,133 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="#1a1a1a"
+    android:background="@color/keyboard_background"
     android:padding="8dp">
 
-    <!-- Main Voice Button -->
+    <!-- Main Touch Area - Entire area is clickable for voice -->
     <FrameLayout
+        android:id="@+id/voice_touch_area"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center">
+        android:layout_height="140dp"
+        android:background="@drawable/glass_background"
+        android:clickable="true"
+        android:focusable="true">
 
-        <!-- Progress Bar -->
+        <!-- Hidden Progress Bar (shows only when processing) -->
         <ProgressBar
             android:id="@+id/progress_bar"
             style="?android:attr/progressBarStyle"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_gravity="center"
+            android:indeterminateTint="#ffffff"
             android:visibility="gone" />
 
-        <!-- Voice Button -->
-        <Button
+        <!-- Invisible Voice Button (for ID compatibility) -->
+        <View
             android:id="@+id/voice_button"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:layout_gravity="center"
-            android:text="🎤"
-            android:textSize="48sp"
-            android:background="@drawable/button_idle" />
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:visibility="gone" />
 
     </FrameLayout>
 
-    <!-- Status Text with Stats Button -->
+    <!-- Hidden Status Text (for ID compatibility) -->
+    <TextView
+        android:id="@+id/status_text"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone" />
+
+    <!-- Hidden Feature Indicators (for ID compatibility) -->
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:padding="8dp">
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone">
         
         <TextView
-            android:id="@+id/status_text"
+            android:id="@+id/whisper_indicator"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Tap to speak"
-            android:textColor="#ffffff"
-            android:textSize="14sp"
-            android:gravity="center" />
-        
-        <Button
-            android:id="@+id/stats_button"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:text="📊"
-            android:textSize="16sp"
-            android:background="@android:color/transparent"
-            android:minWidth="40dp"
-            android:padding="4dp" />
+            android:layout_height="0dp"
+            android:visibility="gone" />
+            
+        <TextView
+            android:id="@+id/privacy_indicator"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:visibility="gone" />
+            
+        <TextView
+            android:id="@+id/language_indicator"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:visibility="gone" />
             
     </LinearLayout>
 
-    <!-- Simple Action Buttons Row -->
+    <!-- Action Buttons Row - Evenly spaced -->
     <LinearLayout
         android:id="@+id/quick_actions"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:gravity="center">
+        android:gravity="center"
+        android:layout_marginTop="8dp">
 
         <Button
             android:id="@+id/settings_button"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
+            android:layout_width="0dp"
+            android:layout_height="44dp"
+            android:layout_weight="1"
             android:text="⚙️"
             android:textSize="20sp"
-            android:background="@android:color/transparent"
-            android:minWidth="48dp" />
+            android:textColor="#ffffff"
+            android:background="@drawable/glass_button_small"
+            android:layout_marginEnd="4dp" />
 
         <Button
             android:id="@+id/language_button"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
+            android:layout_width="0dp"
+            android:layout_height="44dp"
+            android:layout_weight="1"
             android:text="🌐"
             android:textSize="20sp"
-            android:background="@android:color/transparent"
-            android:minWidth="48dp" />
+            android:textColor="#ffffff"
+            android:background="@drawable/glass_button_small"
+            android:layout_marginEnd="4dp" />
 
         <Button
-            android:id="@+id/keyboard_button"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:text="⌨️"
+            android:id="@+id/space_button"
+            android:layout_width="0dp"
+            android:layout_height="44dp"
+            android:layout_weight="1"
+            android:text="␣"
             android:textSize="20sp"
-            android:background="@android:color/transparent"
-            android:minWidth="48dp" />
+            android:textColor="#ffffff"
+            android:background="@drawable/glass_button_small"
+            android:layout_marginEnd="4dp" />
+
+        <Button
+            android:id="@+id/backspace_button"
+            android:layout_width="0dp"
+            android:layout_height="44dp"
+            android:layout_weight="1"
+            android:drawableStart="@drawable/ic_backspace"
+            android:drawableTint="#ffffff"
+            android:background="@drawable/glass_button_small"
+            android:layout_marginEnd="4dp"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp" />
 
         <Button
             android:id="@+id/clear_button"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
+            android:layout_width="0dp"
+            android:layout_height="44dp"
+            android:layout_weight="1"
             android:text="❌"
             android:textSize="20sp"
-            android:background="@android:color/transparent"
-            android:minWidth="48dp" />
+            android:textColor="#ffffff"
+            android:background="@drawable/glass_button_small" />
 
     </LinearLayout>
 
