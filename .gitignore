@@ -10,5 +10,8 @@
 local.properties
 *.jks
 *.keystore
+.env
+*.env
+api_keys.properties
 # Keep the APK for releases
 !/app/build/outputs/apk/debug/app-debug.apk

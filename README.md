@@ -75,6 +75,14 @@ Automatically fixes common Indian English patterns:
 - Groq API key (free tier available at [console.groq.com](https://console.groq.com))
 - 50MB free storage space
 
+### ⚠️ Security Notice
+**NEVER share or commit your API key!** 
+- Keep your Groq API key private and secure
+- Don't hardcode API keys in the source code
+- Don't share screenshots containing your API key
+- The app stores your key locally in encrypted SharedPreferences
+- If your key is compromised, regenerate it immediately at [console.groq.com](https://console.groq.com)
+
 ### Quick Install
 
 1. **Download the latest APK** from [Releases](https://github.com/raviramp36/voxtype-keyboard/releases)

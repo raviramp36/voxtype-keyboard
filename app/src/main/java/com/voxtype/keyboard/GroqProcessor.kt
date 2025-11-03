@@ -40,7 +40,7 @@ class GroqProcessor(private val context: Context) {
         
         if (apiKey.isNotEmpty()) {
             setupRetrofit(apiKey, baseUrl)
-            android.util.Log.d("GroqProcessor", "API configured with key: ${apiKey.take(10)}...")
+            android.util.Log.d("GroqProcessor", "API configured successfully")
         } else {
             android.util.Log.w("GroqProcessor", "No API key found in settings")
         }
