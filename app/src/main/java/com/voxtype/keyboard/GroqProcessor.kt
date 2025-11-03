@@ -106,31 +106,69 @@ class GroqProcessor(private val context: Context) {
                 val detectedLanguage = if (language == "auto") detectLanguage(rawText) else language
                 val whisperModeText = if (isWhisperMode) "\nWHISPER MODE: This text was whispered - adjust confidence and be more conservative with changes." else ""
                 
-                val systemPrompt = """You are a voice-to-text formatter. Transform raw transcriptions into properly formatted text.
+                val systemPrompt = """You are an intelligent writing assistant specializing in Indian English grammar enhancement. Transform raw transcriptions into grammatically correct, natural English.
 
 LANGUAGE: ${detectedLanguage.uppercase()}
 ${getLanguageSpecificRules(detectedLanguage)}
 
-RULES:
-1. Add punctuation (. , ? ! : ;) based on sentence structure and tone
-2. Capitalize: sentences, proper nouns, "I", acronyms
-3. Fix only obvious errors, preserve speaker's natural voice
-4. Handle speech patterns:
-   - Remove excessive "um", "uh" (keep if meaningful)
-   - Fix "gonna"→"going to", "wanna"→"want to" ONLY in formal mode
-5. Punctuation commands: "period"→".", "comma"→",", "question mark"→"?"
-6. Support code-switching between ${detectedLanguage} and English naturally
+INDIAN ENGLISH PATTERN CORRECTIONS:
+1. Fix common Indian English patterns:
+   - "I am having" → "I have" (for possession)
+   - "He is having lunch" → "He is having lunch" (keep for activities)
+   - "doing the needful" → "taking necessary action"
+   - "revert back" → "reply" or "respond"
+   - "out of station" → "out of town" or "away"
+   - "prepone" → "reschedule to an earlier time"
+   - "good name" → "name"
+   - "cousin brother/sister" → "cousin"
+   - Remove redundant words: "return back" → "return", "repeat again" → "repeat"
+
+2. Fix article usage:
+   - Add missing articles: "I am engineer" → "I am an engineer"
+   - Remove unnecessary articles: "the society" → "society" (when general)
+   - Correct article choice: a/an based on pronunciation
+
+3. Fix preposition errors:
+   - "discuss about" → "discuss"
+   - "comprise of" → "comprise" or "consist of"
+   - "cope up with" → "cope with"
+   - "different than" → "different from"
+
+4. Fix tense and verb forms:
+   - Present continuous overuse: "I am thinking it is good" → "I think it's good"
+   - Mixed tenses: Ensure consistency throughout
+   - Verb agreements: "One of my friend" → "One of my friends"
+
+5. Improve sentence structure:
+   - Remove unnecessary words and redundancy
+   - Fix word order issues
+   - Make sentences more concise and clear
+   - Convert indirect expressions to direct ones
+
+6. Handle formality appropriately:
+   - "kindly do the needful" → "please handle this"
+   - "the same" → "it" (when referring to previously mentioned items)
+   - Reduce overuse of "kindly" and "please"
+
+CONTEXT-AWARE IMPROVEMENTS:
+- Understand the intent and enhance clarity
+- Maintain the speaker's tone while fixing grammar
+- Keep cultural context when appropriate
+- Ensure natural, fluent English output
+- KEEP natural time references: "today", "tomorrow", "yesterday", "now", "later" as words
+- DO NOT convert relative time to dates or specific times
+- Preserve conversational tone with natural expressions
 ${whisperModeText}
 
 MODE: ${mode.name}
 ${when (mode) {
-    TextMode.GENERAL -> "Natural conversational style"
-    TextMode.EMAIL -> "Professional email format"
-    TextMode.CHAT -> "Casual messaging style"
-    TextMode.FORMAL -> "Business formal style"
+    TextMode.GENERAL -> "Natural conversational style with grammar corrections"
+    TextMode.EMAIL -> "Professional email with polished grammar"
+    TextMode.CHAT -> "Casual but grammatically correct messaging"
+    TextMode.FORMAL -> "Business formal with perfect grammar"
 }}
 
-OUTPUT: Return ONLY formatted text, nothing else."""
+OUTPUT: Return ONLY the grammatically enhanced text, nothing else."""
                 
                 val userPrompt = buildString {
                     if (context.isNotEmpty()) {
@@ -138,19 +176,28 @@ OUTPUT: Return ONLY formatted text, nothing else."""
                         appendLine(context)
                         appendLine()
                     }
-                    appendLine("RAW SPEECH TO FORMAT:")
+                    appendLine("RAW INDIAN ENGLISH INPUT:")
                     appendLine(rawText)
                     appendLine()
-                    appendLine("INSTRUCTIONS:")
-                    appendLine("- Transform the raw speech into properly formatted text")
-                    appendLine("- Ensure it flows naturally from any previous text")
-                    appendLine("- Apply appropriate punctuation and capitalization")
-                    appendLine("- Fix grammar while keeping the speaker's voice")
+                    appendLine("ENHANCEMENT INSTRUCTIONS:")
+                    appendLine("- Fix ALL grammatical errors and Indian English patterns")
+                    appendLine("- Add missing articles (a, an, the)")
+                    appendLine("- Correct verb tenses and subject-verb agreement")
+                    appendLine("- Remove redundant words and phrases")
+                    appendLine("- Fix preposition usage")
+                    appendLine("- Make the sentence structure clear and natural")
+                    appendLine("- Ensure proper punctuation and capitalization")
+                    appendLine("- Convert Indian English idioms to standard English")
+                    appendLine("- Maintain the original meaning and intent")
+                    appendLine("- Keep 'today', 'tomorrow', 'yesterday' as natural words - don't convert to dates")
+                    appendLine("- Preserve natural conversational tone")
                     if (context.isEmpty()) {
-                        appendLine("- This appears to be the start of a new message/document")
+                        appendLine("- This is the start of a new message")
                     } else {
-                        appendLine("- This is a continuation - ensure smooth flow")
+                        appendLine("- Ensure this flows naturally from the previous text")
                     }
+                    appendLine()
+                    appendLine("IMPORTANT: The user wants to improve their English. Be thorough in corrections.")
                 }
                 
                 val request = GroqRequest(
@@ -334,17 +381,10 @@ OUTPUT: Return ONLY formatted text, nothing else."""
     }
     
     private fun applyDateFormatting(text: String): String {
-        var result = text
-        
-        // Convert common date expressions
-        val today = LocalDate.now()
-        val dateFormatter = java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy")
-        
-        result = result.replace(Regex("\\btoday\\b", RegexOption.IGNORE_CASE), today.format(dateFormatter))
-        result = result.replace(Regex("\\btomorrow\\b", RegexOption.IGNORE_CASE), today.plusDays(1).format(dateFormatter))
-        result = result.replace(Regex("\\byesterday\\b", RegexOption.IGNORE_CASE), today.minusDays(1).format(dateFormatter))
-        
-        return result
+        // Keep natural time references as they are for more humanized text
+        // Don't convert today/tomorrow/yesterday to dates
+        // This makes the text more natural and conversational
+        return text
     }
     
     suspend fun getContextualEmojiSuggestions(text: String, appContext: String): List<String> {
@@ -379,12 +419,39 @@ HINDI SPECIFIC RULES:
 - Numbers: ek, do, teen, paanch, das, sau, hazaar, lakh, crore
             """.trimIndent()
             
-            "en" -> """
-INDIAN ENGLISH SPECIFIC RULES:
-- Keep phrases: do the needful, prepone, revert back, out of station
-- Numbers: lakh, crore, paisa
-- Respectful terms: sir, madam, ji
-- Common Hindi mixing: acha, theek hai, bas, kitna, kya
+            "en", "en_IN" -> """
+INDIAN ENGLISH GRAMMAR ENHANCEMENT RULES:
+- MUST FIX these common patterns:
+  * "I am having doubt" → "I have a doubt" or "I have doubts"
+  * "He is not knowing" → "He doesn't know"
+  * "What is your good name?" → "What is your name?"
+  * "I am belonging to Delhi" → "I am from Delhi" or "I belong to Delhi"
+  * "Can you please do the needful?" → "Can you please take care of this?"
+  * "Please revert back" → "Please reply" or "Please respond"
+  * "I have completed my graduation" → "I graduated" or "I have graduated"
+  * "passing out from college" → "graduating from college"
+  * "out of station" → "out of town" or "away"
+  * "order for food" → "order food"
+  * "discuss about" → "discuss"
+  * "comprise of" → "comprise" or "consist of"
+  
+- Fix redundancies:
+  * "return back" → "return"
+  * "repeat again" → "repeat"
+  * "revert back" → "revert" or better "reply"
+  * "reduce down" → "reduce"
+  
+- Fix article usage:
+  * Add missing articles: "I am engineer" → "I am an engineer"
+  * Remove extra articles: "I am going to the home" → "I am going home"
+  
+- Correct prepositions:
+  * "different than" → "different from"
+  * "angry on" → "angry with"
+  * "comprised of" → "composed of" or just "comprises"
+  
+- Maintain respectful terms where appropriate: sir, madam, ji
+- Keep numbers in lakhs/crores when discussing Indian currency
             """.trimIndent()
             
             else -> "Standard English formatting rules"

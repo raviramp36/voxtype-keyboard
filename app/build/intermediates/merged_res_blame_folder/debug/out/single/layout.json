@@ -1,11 +1,11 @@
 [
     {
-        "merged": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-mergeDebugResources-50:/layout/activity_main.xml",
-        "source": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-main-53:/layout/activity_main.xml"
-    },
-    {
         "merged": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-mergeDebugResources-50:/layout/item_dictionary_word.xml",
         "source": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-main-53:/layout/item_dictionary_word.xml"
+    },
+    {
+        "merged": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-mergeDebugResources-50:/layout/activity_main.xml",
+        "source": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-main-53:/layout/activity_main.xml"
     },
     {
         "merged": "/Users/ravikumar/.gradle/daemon/8.2/com.voxtype.keyboard.app-mergeDebugResources-50:/layout/item_recent_word.xml",
